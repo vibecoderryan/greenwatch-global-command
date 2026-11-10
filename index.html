@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080f0b">
+  <meta name="description" content="GREENWATCH: GLOBAL COMMAND – weltweites Strategie- und Radarspiel im Browser.">
+  <title>GREENWATCH — GLOBAL COMMAND</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="data/world-data.js"></script>
+  <script defer src="js/game.js"></script>
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="topbar">
+      <div class="brand"><div class="brand-badge">GW<span>◆</span></div><div><div class="brand-title">GREENWATCH <b>/ GLOBAL COMMAND</b></div><div class="brand-sub">UNIFIED COMMAND NETWORK <span class="dot">●</span> SYSTEM ONLINE</div></div></div>
+      <div class="top-metrics">
+        <div class="metric"><span>VERSORGUNG</span><strong id="supplies">250 <small>VP</small></strong></div>
+        <div class="metric"><span>TERRITORIEN</span><strong id="territories">0 <small>/ 3</small></strong></div>
+        <div class="metric"><span>AUFKLÄRUNG</span><strong id="intel-count">0 <small>GEB.</small></strong></div>
+        <div class="metric"><span>SPIELZEIT</span><strong id="time">00:00</strong></div>
+      </div>
+      <div class="top-actions"><button id="help-btn" class="icon-button" title="Spielanleitung" aria-label="Spielanleitung">?</button><button id="save-btn" class="secondary tiny">SPEICHERN</button><button id="reset-btn" class="icon-button" title="Neues Spiel" aria-label="Neues Spiel">↻</button></div>
+    </header>
+
+    <div class="control-strip"><div class="indicator"><span class="pulsedot"></span> TACTICAL OPERATIONS CENTER <span class="sep">/</span> <span id="sector-label">SOUTH ATLANTIC SECTOR</span></div><div class="sim-controls"><span class="micro-label">SIMULATION</span><button id="pause-btn" class="control active" aria-label="Pause oder fortsetzen">❚❚</button><button class="control speed active" data-speed="1">1×</button><button class="control speed" data-speed="3">3×</button><button class="control speed" data-speed="10">10×</button><div class="line"></div><span id="date-label">TAG 001</span></div></div>
+
+    <div class="workspace">
+      <nav class="rail" aria-label="Spielansichten">
+        <button id="nav-world" class="rail-btn active" data-view="world" title="Weltkarte"><span class="rail-icon">◎</span><span>WELT</span></button>
+        <button id="nav-radar" class="rail-btn" data-view="radar" title="Radar"><span class="rail-icon">◉</span><span>RADAR</span></button>
+        <div class="rail-gap"></div><button id="nav-how" class="rail-btn" title="Hilfe"><span class="rail-icon">ⓘ</span><span>HILFE</span></button>
+        <div class="rail-footer">GW<br>0.1</div>
+      </nav>
+
+      <main class="stage">
+        <div class="stage-heading"><div><div class="eyebrow" id="view-eyebrow">01 / STRATEGIC THEATER</div><h1 id="view-title">WELTKARTE <span>/ GLOBAL SITUATION</span></h1></div><div id="mode-label" class="mode-tag">FOG OF WAR ACTIVE</div></div>
+        <section id="world-view" class="viewport">
+          <canvas id="world-canvas" aria-label="Interaktive Weltkarte: Länder anklicken zum Auswählen"></canvas>
+          <div class="map-hud upper-left"><div class="hud-label">TACTICAL OVERLAY</div><div id="map-coordinates" class="hud-data">56.2°W / 34.9°S</div><div class="hud-small">KLICK: LAND WÄHLEN · ZIEHEN: KARTE</div></div>
+          <div class="map-hud upper-right"><span class="legend"><i style="background:#77b88c"></i> EIGEN</span><span class="legend"><i style="background:#b55e58"></i> GEGENPARTEI</span><span class="legend"><i style="background:#9c8b60"></i> NEUTRAL</span><span class="legend"><i style="background:#1a2b20"></i> UNAUFGEKLÄRT</span></div>
+          <div class="map-hud bottom-left"><span id="map-bottom-status">NEUTRALE WELT // BASIS OPERATIV</span></div>
+          <div class="zoom-controls"><button id="zoom-in" aria-label="Hineinzoomen">+</button><button id="zoom-out" aria-label="Herauszoomen">−</button><button id="zoom-home" title="Zur Startbasis" aria-label="Zur Basis">⌖</button><button id="zoom-world" title="Gesamte Welt" aria-label="Gesamte Welt">◫</button></div>
+        </section>
+        <section id="radar-view" class="viewport hidden">
+          <canvas id="radar-canvas" aria-label="Radar mit Luftkontakten"></canvas>
+          <div class="map-hud upper-left"><div class="hud-label">PRIMARY RADAR SCOPE</div><div id="radar-station-label" class="hud-data">RDR-01 // HQ URUGUAY</div><div class="hud-small">TRACK SELECT / CLICK TARGET</div></div>
+          <div class="map-hud upper-right radar-stats"><span id="radar-range">RNG 650 KM</span><span id="radar-contact-count">TRACKS 00</span><span id="radar-bearing">SWEEP 000°</span></div>
+          <div class="map-hud bottom-left"><span>MONOCHROME PHOSPHOR DISPLAY // SIMULATED</span></div>
+          <div class="radar-stations"><label for="radar-station-select">SENSORSTATION</label><select id="radar-station-select"></select></div>
+        </section>
+        <section class="feed"><div class="feed-title"><span class="pulsedot"></span> OPERATIONS LOG <span class="feed-count" id="event-count">LIVE</span></div><div id="log" class="log" role="log" aria-live="polite"></div></section>
+      </main>
+
+      <aside class="sidebar"><div class="sidebar-header"><div class="eyebrow">02 / COMMAND TERMINAL</div><h2>BEFEHLSZENTRALE</h2><div class="tab-row"><button class="tab active" data-tab="operations">OPERATIONEN</button><button class="tab" data-tab="build">BAUEN</button><button class="tab" data-tab="intel">INTEL</button></div></div><div class="sidebar-scroll"><div id="panel-operations" class="panel"></div><div id="panel-build" class="panel hidden"></div><div id="panel-intel" class="panel hidden"></div></div><div class="sidebar-bottom"><span class="pulsedot"></span> <span id="system-status">KOMMANDONETZ ONLINE</span><span>VER 0.1</span></div></aside>
+    </div>
+
+    <footer class="footer"><div>GREENWATCH GLOBAL COMMAND <span>·</span> SINGLE PLAYER SIMULATION <span>·</span> OFFLINE WORLD DATA</div><div>LEERTASTE: PAUSE <span>·</span> MAUSRAD: ZOOM <span>·</span> ESC: AUSWAHL</div></footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal"><div class="modal-kicker">COMMAND BRIEFING // SECTOR 07</div><h2 id="modal-title">MISSION: FIRST EXPANSION</h2><div id="modal-content"></div><div class="modal-actions"><button id="modal-cancel" class="secondary">SCHLIESSEN</button><button id="modal-confirm" class="primary">EINSATZ STARTEN →</button></div></div></div>
+</body>
+</html>
