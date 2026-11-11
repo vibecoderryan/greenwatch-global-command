@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
-  <meta name="description" content="GREENWATCH: GLOBAL COMMAND v0.8 – weltweites Strategie- und Radarspiel im Browser.">
+  <meta name="description" content="GREENWATCH: GLOBAL COMMAND v0.9 – weltweites Strategie- und Radarspiel im Browser.">
   <title>GREENWATCH — GLOBAL COMMAND</title>
   <style>
 :root{--bg:#080f0b;--panel:#0e1b13;--panel2:#112218;--panel3:#172b1e;--border:#284433;--edge:#365e42;--green:#9be2a6;--bright:#bafabf;--dim:#648972;--muted:#7d9784;--text:#d0e2cf;--yellow:#deb977;--red:#e08579;--blue:#719ba6}
@@ -271,6 +271,27 @@ button{touch-action:manipulation}
 .front-metrics{margin:0}.tab{font-size:10px!important;min-width:0;letter-spacing:0!important}
 @media(max-width:699px){#mobile-nav{grid-template-columns:repeat(6,minmax(0,1fr))!important}#mobile-nav button{font-size:8px;min-width:0;padding-left:1px;padding-right:1px}#mobile-nav button span{font-size:19px}}
 
+
+/* v0.9: map-first command strip; no automatic 60% height sheet. */
+.gw-dock,.gw-picker{position:absolute;z-index:11;left:12px;right:12px;bottom:15px;max-width:570px;padding:10px;background:rgba(8,24,15,.97);border:1px solid #78aa83;border-radius:10px;box-shadow:0 12px 36px #000c;pointer-events:auto}
+.gw-dock.hidden,.gw-picker.hidden{display:none!important}.gw-dock-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.gw-dock-head strong{font-size:12px;color:#ddf6db;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.gw-dock-head small{color:#b3cba9;font-size:10px;white-space:nowrap}.gw-actions{display:flex;gap:6px;flex-wrap:wrap}.gw-actions button,.gw-picker button{min-height:44px;min-width:60px;flex:1;border:1px solid #567c5e;background:#203c29;color:#d7f2d9;border-radius:6px;padding:7px 10px;font:bold 11px Courier New,monospace}.gw-actions button.primary-cmd{border-color:#b6c87a;background:#42633e;color:#f0f5c8}.gw-actions button.red-cmd{border-color:#bc826d;background:#533027;color:#ffdcbe}.gw-actions button:disabled{opacity:.35}.gw-dock-status{font-size:10px;color:#98c9a0;line-height:1.35;margin:5px 0 0}.gw-dock.waiting{border-color:#e5c37e;box-shadow:0 0 0 2px #795e31,0 12px 40px #000c}.gw-picker{bottom:135px;max-width:370px}.gw-picker>strong{font-size:11px;display:block;margin-bottom:7px;color:#eedda4}.gw-picker button{display:inline-flex;align-items:center;gap:5px;justify-content:center;flex:1 1 110px}.gw-picker .gw-actions{flex-wrap:wrap}.gw-picker svg{width:21px;height:21px}.gw-area .gw-dock-status{color:#c5d7b6}
+.gw-dock-head>button{border:1px solid #547459;background:#203b2a;color:#dff5df;border-radius:5px;min-height:30px;min-width:34px;font-size:18px}.gw-dock-head strong svg{width:20px;height:20px;vertical-align:middle;margin-right:5px}.gw-radar-dock{bottom:70px;max-width:480px}.gw-highlight-help{color:#f5d49b!important}.gw-symbol-friendly{color:#afffd0}
+@media(max-width:699px){
+ .gw-dock{bottom:calc(73px + var(--safe-bottom));left:6px;right:6px;max-width:none;padding:9px 9px 8px;border-radius:9px}
+ .gw-picker{bottom:calc(204px + var(--safe-bottom));left:7px;right:7px;max-width:none}
+ .gw-actions button{min-height:49px;font-size:11px;padding:6px;min-width:68px}
+ .gw-dock-head strong{font-size:12px}.gw-dock-head small{font-size:10px}
+ .mission-guide{top:5px!important;bottom:auto!important;min-height:0!important;padding:6px 8px!important;max-width:230px!important;right:auto!important;gap:5px!important}
+ .mission-copy small,.mission-buttons .guide-secondary,.mission-copy .guide-eyebrow{display:none!important}
+ .mission-copy strong{font-size:10px!important;max-width:116px}
+ .mission-buttons button{min-width:73px!important;min-height:29px!important;font-size:9px!important}
+ .workspace:has(.gw-dock:not(.hidden)) .mission-guide,.workspace:has(.gw-picker:not(.hidden)) .mission-guide{display:none!important}
+ .selection-hud{display:none!important}
+ .toast{top:176px!important;bottom:auto!important;max-width:none!important;padding:10px 12px!important;font-size:11px!important}
+ .workspace:has(.gw-dock:not(.hidden)) .sidebar:not(.sheet-open),.workspace:has(.gw-picker:not(.hidden)) .sidebar:not(.sheet-open){display:none!important}
+ .gw-radar-dock{bottom:calc(88px + var(--safe-bottom))}
+}
+@media(min-width:700px){.gw-dock{bottom:14px;right:auto;left:18px;width:min(570px,calc(100% - 30px))}.gw-picker{bottom:155px;right:auto;left:18px}.workspace:has(.gw-dock:not(.hidden)) .mission-guide{display:none}}
 </style>
   
   
@@ -296,14 +317,17 @@ button{touch-action:manipulation}
         <button id="nav-world" class="rail-btn active" data-view="world" title="Weltkarte"><span class="rail-icon">◎</span><span>WELT</span></button>
         <button id="nav-radar" class="rail-btn" data-view="radar" title="Radar"><span class="rail-icon">◉</span><span>RADAR</span></button>
         <div class="rail-gap"></div><button id="nav-how" class="rail-btn" title="Hilfe"><span class="rail-icon">ⓘ</span><span>HILFE</span></button>
-        <div class="rail-footer">GW<br>0.8</div>
+        <div class="rail-footer">GW<br>0.9</div>
       </nav>
 
       <main class="stage">
         <div class="stage-heading"><div><div class="eyebrow" id="view-eyebrow">01 / STRATEGIC THEATER</div><h1 id="view-title">WELTKARTE <span>/ GLOBAL SITUATION</span></h1></div><div id="mode-label" class="mode-tag">FOG OF WAR ACTIVE</div></div>
         <section id="world-view" class="viewport">
           <div id="mission-guide" class="mission-guide" aria-live="polite"><div class="mission-copy"><span class="guide-eyebrow">MISSION CONTROL / NÄCHSTER SCHRITT</span><strong id="mission-title">Basis sichern</strong><small id="mission-detail">Wähle eine Einheit und ein Ziel.</small></div><div class="mission-buttons"><button id="mission-focus" class="guide-secondary">ZIEL ZEIGEN</button><button id="mission-act" class="guide-primary">ANGREIFEN →</button></div></div>
-          <canvas id="world-canvas" aria-label="Interaktive Weltkarte: Länder anklicken zum Auswählen"></canvas>
+          <canvas id="world-canvas" aria-label="Interaktive Weltkarte: Einheit antippen, Befehl wählen, Ziel antippen"></canvas>
+          <div id="unit-picker" class="gw-picker hidden" aria-label="Einheit auswählen"></div>
+          <div id="unit-dock" class="gw-dock hidden" aria-live="polite"></div>
+          <div id="area-dock" class="gw-dock gw-area hidden" aria-live="polite"></div>
           <div class="map-hud upper-left"><div class="hud-label">TACTICAL OVERLAY</div><div id="map-coordinates" class="hud-data">56.2°W / 34.9°S</div><div id="zoom-readout" class="zoom-readout">ZOOM 8× · MAX 100×</div><div class="hud-small">TIPPEN: AUSWÄHLEN · ZIEHEN: KARTE</div></div>
           <div class="map-hud upper-right"><span class="legend"><i style="background:#77b88c"></i> EIGEN</span><span class="legend"><i style="background:#b55e58"></i> GEGENPARTEI</span><span class="legend"><i style="background:#9c8b60"></i> NEUTRAL</span><span class="legend"><i style="background:#1a2b20"></i> UNAUFGEKLÄRT</span></div>
           <div class="selection-hud"><div id="selected-sector">URUGUAY · NEUTRAL</div><button id="sector-commands">BEFEHLE →</button></div><div id="symbol-guide" class="symbol-guide hidden"><header><strong>SYMBOLLEGENDE</strong><button id="legend-close" aria-label="Legende schließen">×</button></header><div id="symbol-guide-items"></div><small>Form vor Farbe: Zivilflugzeuge, Kampfjets und unbekannte Kontakte unterscheiden sich auch im Radarschirm.</small></div><div class="map-hud bottom-left map-bottom-readout"><span id="map-bottom-status">NEUTRALE WELT // BASIS OPERATIV</span></div>
@@ -311,7 +335,8 @@ button{touch-action:manipulation}
         </section>
         <section id="radar-view" class="viewport hidden">
           <button id="radar-warning" class="radar-warning hidden" aria-label="Luftbedrohung anzeigen">WARNUNG: KONTAKT IM ANFLUG · DETAILS →</button>
-          <canvas id="radar-canvas" aria-label="Radar mit Luftkontakten"></canvas>
+          <canvas id="radar-canvas" aria-label="Radar mit eigenen Flugzeugen und Luftkontakten"></canvas>
+          <div id="radar-dock" class="gw-dock gw-radar-dock hidden" aria-live="polite"></div>
           <div class="map-hud upper-left"><div class="hud-label">PRIMARY RADAR SCOPE</div><div id="radar-station-label" class="hud-data">RDR-01 // HQ URUGUAY</div><div class="hud-small">TRACK SELECT / CLICK TARGET</div></div>
           <div class="map-hud upper-right radar-stats"><span id="radar-range">RNG 650 KM</span><span id="radar-contact-count">TRACKS 00</span><span id="radar-bearing">SWEEP 000°</span></div>
           <div class="map-hud bottom-left"><span>MONOCHROME PHOSPHOR DISPLAY // SIMULATED</span></div>
@@ -320,7 +345,7 @@ button{touch-action:manipulation}
         <section class="feed"><div class="feed-title"><span class="pulsedot"></span> OPERATIONS LOG <span class="feed-count" id="event-count">LIVE</span></div><div id="log" class="log" role="log" aria-live="polite"></div></section>
       </main>
 
-      <aside class="sidebar" id="command-sheet"><div id="mobile-sheet-grip"><button id="sheet-toggle" aria-expanded="false" aria-controls="command-sheet">⌃ BEFEHLSZENTRALE · <span id="mobile-selected">URUGUAY</span></button><button id="sheet-close" aria-label="Befehlszentrale schließen">⌄</button></div><div class="sidebar-header"><div class="eyebrow">02 / COMMAND TERMINAL</div><h2>BEFEHLSZENTRALE</h2><div class="tab-row"><button class="tab active" data-tab="operations">OPERATIONEN</button><button class="tab" data-tab="build">BAUEN</button><button class="tab" data-tab="intel">INTEL</button><button class="tab" data-tab="front">FRONT</button></div></div><div class="sidebar-scroll"><div id="panel-operations" class="panel"></div><div id="panel-build" class="panel hidden"></div><div id="panel-intel" class="panel hidden"></div><div id="panel-front" class="panel hidden"></div></div><div class="sidebar-bottom"><span class="pulsedot"></span> <span id="system-status">KOMMANDONETZ ONLINE</span><span>VER 0.8</span></div></aside>
+      <aside class="sidebar" id="command-sheet"><div id="mobile-sheet-grip"><button id="sheet-toggle" aria-expanded="false" aria-controls="command-sheet">⌃ BEFEHLSZENTRALE · <span id="mobile-selected">URUGUAY</span></button><button id="sheet-close" aria-label="Befehlszentrale schließen">⌄</button></div><div class="sidebar-header"><div class="eyebrow">02 / COMMAND TERMINAL</div><h2>BEFEHLSZENTRALE</h2><div class="tab-row"><button class="tab active" data-tab="operations">OPERATIONEN</button><button class="tab" data-tab="build">BAUEN</button><button class="tab" data-tab="intel">INTEL</button><button class="tab" data-tab="front">FRONT</button></div></div><div class="sidebar-scroll"><div id="panel-operations" class="panel"></div><div id="panel-build" class="panel hidden"></div><div id="panel-intel" class="panel hidden"></div><div id="panel-front" class="panel hidden"></div></div><div class="sidebar-bottom"><span class="pulsedot"></span> <span id="system-status">KOMMANDONETZ ONLINE</span><span>VER 0.9</span></div></aside>
       <nav id="mobile-nav" aria-label="Mobile Spielsteuerung">
         <button id="mobile-world" class="active" aria-label="Weltkarte"><span>◎</span>WELTKARTE</button>
         <button id="mobile-radar" aria-label="Radarschirm"><span>◉</span>RADAR</button>
@@ -343,7 +368,7 @@ window.GREENWATCH_WORLD = [{"id":"FJI","name":"Fiji","continent":"Oceania","pop"
 window.GREENWATCH_SECTORS = [{"id":"URY-MON","country":"URY","city":"Montevideo","lon":-56.165,"lat":-34.905,"defense":4,"geometry":{"type":"Polygon","coordinates":[[[-56.421,-32.816],[-53.626,-33.252],[-53.374,-33.768],[-53.806,-34.397],[-54.936,-34.953],[-55.674,-34.753],[-56.215,-34.86],[-57.14,-34.43],[-57.818,-34.463],[-58.427,-33.909],[-58.41,-33.833],[-56.421,-32.816]]]}},{"id":"URY-SAL","country":"URY","city":"Salto","lon":-57.963,"lat":-31.385,"defense":4,"geometry":{"type":"Polygon","coordinates":[[[-56.421,-32.816],[-58.41,-33.833],[-57.625,-30.216],[-56.954,-30.127],[-56.421,-32.816]]]}},{"id":"URY-RIV","country":"URY","city":"Rivera","lon":-55.541,"lat":-30.905,"defense":4,"geometry":{"type":"Polygon","coordinates":[[[-56.421,-32.816],[-56.954,-30.127],[-55.973,-30.883],[-55.602,-30.854],[-53.788,-32.047],[-53.21,-32.728],[-53.651,-33.202],[-53.626,-33.252],[-56.421,-32.816]]]}},{"id":"PRY-ASU","country":"PRY","city":"Asunción","lon":-57.635,"lat":-25.284,"defense":5,"geometry":{"type":"Polygon","coordinates":[[[-56.155,-25.793],[-57.868,-27.273],[-58.618,-27.124],[-57.634,-25.604],[-57.777,-25.162],[-60.029,-24.033],[-60.847,-23.881],[-62.685,-22.249],[-62.266,-20.514],[-61.786,-19.634],[-59.115,-19.357],[-58.183,-19.868],[-57.871,-20.733],[-57.937,-22.09],[-56.882,-22.282],[-56.473,-22.086],[-55.896,-22.318],[-56.155,-25.793]]]}},{"id":"PRY-CDE","country":"PRY","city":"Ciudad del Este","lon":-54.616,"lat":-25.509,"defense":5,"geometry":{"type":"Polygon","coordinates":[[[-56.155,-25.793],[-55.896,-22.318],[-55.798,-22.357],[-55.401,-23.957],[-54.653,-23.84],[-54.293,-24.021],[-54.789,-26.622],[-54.86,-26.682],[-56.155,-25.793]]]}},{"id":"PRY-ENC","country":"PRY","city":"Encarnación","lon":-55.866,"lat":-27.331,"defense":5,"geometry":{"type":"Polygon","coordinates":[[[-56.155,-25.793],[-54.86,-26.682],[-55.696,-27.388],[-56.487,-27.548],[-57.868,-27.273],[-56.155,-25.793]]]}},{"id":"ARG-BUE","country":"ARG","city":"Buenos Aires","lon":-58.382,"lat":-34.606,"defense":6,"geometry":{"type":"MultiPolygon","coordinates":[[[[-63.587,-39.365],[-57.908,-31.587],[-58.495,-34.431],[-57.226,-35.288],[-57.362,-35.977],[-56.737,-36.413],[-56.788,-36.902],[-57.749,-38.184],[-59.232,-38.72],[-62.336,-38.828],[-62.126,-39.424],[-62.331,-40.173],[-62.146,-40.677],[-62.204,-40.711],[-63.587,-39.365]]],[[[-53.787,-25.943],[-53.628,-26.125],[-53.649,-26.923],[-55.162,-27.882],[-55.293,-28.007],[-53.787,-25.943]]]]}},{"id":"ARG-COR","country":"ARG","city":"Córdoba","lon":-64.189,"lat":-31.414,"defense":6,"geometry":{"type":"Polygon","coordinates":[[[-64.78,-37.626],[-68.403,-26.211],[-68.418,-24.519],[-67.328,-24.025],[-66.985,-22.986],[-67.107,-22.736],[-66.273,-21.832],[-64.965,-22.076],[-64.377,-22.798],[-63.987,-21.994],[-62.846,-22.035],[-60.847,-23.881],[-60.029,-24.033],[-59.076,-24.511],[-64.78,-37.626]]]}},{"id":"ARG-MEN","country":"ARG","city":"Mendoza","lon":-68.845,"lat":-32.892,"defense":6,"geometry":{"type":"Polygon","coordinates":[[[-64.78,-37.626],[-64.788,-38.592],[-71.424,-38.954],[-71.414,-38.916],[-70.815,-38.553],[-71.119,-37.577],[-71.122,-36.658],[-70.365,-36.005],[-70.388,-35.17],[-69.817,-34.194],[-69.815,-33.274],[-70.074,-33.091],[-70.535,-31.365],[-69.919,-30.336],[-70.014,-29.368],[-69.656,-28.459],[-68.296,-26.899],[-68.595,-26.507],[-68.403,-26.211],[-64.78,-37.626]]]}},{"id":"ARG-ROS","country":"ARG","city":"Rosario","lon":-60.639,"lat":-32.958,"defense":6,"geometry":{"type":"Polygon","coordinates":[[[-55.293,-28.007],[-57.625,-30.216],[-57.908,-31.587],[-63.587,-39.365],[-64.788,-38.592],[-64.78,-37.626],[-59.076,-24.511],[-57.777,-25.162],[-57.634,-25.604],[-58.618,-27.124],[-56.487,-27.548],[-55.696,-27.388],[-54.789,-26.622],[-54.625,-25.739],[-54.13,-25.548],[-53.787,-25.943],[-55.293,-28.007]]]}},{"id":"ARG-PAT","country":"ARG","city":"Patagonia","lon":-68.2,"lat":-44.7,"defense":6,"geometry":{"type":"MultiPolygon","coordinates":[[[[-64.788,-38.592],[-63.587,-39.365],[-62.204,-40.711],[-62.746,-41.029],[-63.77,-41.167],[-64.732,-40.803],[-65.118,-41.064],[-64.979,-42.058],[-64.303,-42.359],[-63.756,-42.044],[-63.458,-42.563],[-64.379,-42.874],[-65.182,-43.495],[-65.565,-45.037],[-66.51,-45.04],[-67.294,-45.552],[-67.581,-46.302],[-66.597,-47.034],[-65.641,-47.236],[-65.985,-48.133],[-67.166,-48.697],[-67.816,-49.87],[-68.729,-50.264],[-69.139,-50.733],[-68.816,-51.771],[-68.15,-52.35],[-71.915,-52.009],[-72.329,-51.426],[-72.31,-50.677],[-72.976,-50.741],[-73.328,-50.379],[-73.415,-49.318],[-72.648,-48.879],[-72.331,-48.244],[-72.447,-47.739],[-71.917,-46.885],[-71.552,-45.561],[-71.659,-44.974],[-71.223,-44.784],[-71.33,-44.408],[-71.794,-44.207],[-71.464,-43.788],[-71.915,-43.409],[-72.149,-42.255],[-71.747,-42.051],[-71.916,-40.832],[-71.424,-38.954],[-64.788,-38.592]]],[[[-67.75,-53.85],[-66.45,-54.45],[-65.05,-54.7],[-65.5,-55.2],[-66.45,-55.25],[-66.96,-54.897],[-68.633,-54.869],[-68.634,-52.636],[-67.75,-53.85]]]]}},{"id":"BRA-BRA","country":"BRA","city":"Brasília","lon":-47.882,"lat":-15.794,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-42.334,-17.237],[-45.64,-19.412],[-56.805,-21.21],[-57.882,-20.956],[-57.871,-20.733],[-58.166,-20.177],[-57.854,-19.97],[-57.95,-19.4],[-57.498,-18.174],[-57.735,-17.552],[-58.281,-17.272],[-58.241,-16.3],[-60.158,-16.258],[-60.373,-15.607],[-46.754,-2.559],[-42.334,-17.237]]]}},{"id":"BRA-SAO","country":"BRA","city":"São Paulo","lon":-46.633,"lat":-23.55,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-45.64,-19.412],[-44.87,-23.492],[-45.352,-23.797],[-46.472,-24.089],[-47.649,-24.885],[-48.495,-25.877],[-48.641,-26.624],[-48.498,-27.099],[-56.805,-21.21],[-45.64,-19.412]]]}},{"id":"BRA-RIO","country":"BRA","city":"Rio de Janeiro","lon":-43.207,"lat":-22.903,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-45.64,-19.412],[-42.334,-17.237],[-39.619,-18.523],[-39.761,-19.599],[-40.775,-20.905],[-40.945,-21.937],[-41.754,-22.371],[-41.988,-22.97],[-43.075,-22.968],[-44.648,-23.352],[-44.87,-23.492],[-45.64,-19.412]]]}},{"id":"BRA-MAN","country":"BRA","city":"Manaus","lon":-60.025,"lat":-3.119,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-46.754,-2.559],[-60.373,-15.607],[-60.543,-15.094],[-60.251,-15.077],[-60.503,-13.776],[-61.084,-13.479],[-61.713,-13.489],[-63.196,-12.627],[-64.316,-12.462],[-65.402,-11.566],[-65.338,-9.762],[-66.647,-9.931],[-68.271,-11.015],[-70.549,-11.009],[-70.482,-9.49],[-71.302,-10.079],[-72.185,-10.054],[-72.563,-9.52],[-73.227,-9.462],[-73.015,-9.033],[-73.987,-7.524],[-73.723,-7.341],[-73.724,-6.919],[-73.12,-6.63],[-73.22,-6.089],[-72.892,-5.275],[-70.795,-4.251],[-69.894,-4.298],[-69.42,-1.123],[-69.577,-0.55],[-70.021,-0.185],[-70.016,0.541],[-69.252,0.603],[-69.219,0.986],[-69.805,1.089],[-69.817,1.715],[-67.869,1.692],[-67.538,2.037],[-67.065,1.13],[-66.876,1.253],[-66.326,0.724],[-65.548,0.789],[-65.355,1.095],[-64.199,1.493],[-64.083,1.916],[-63.369,2.201],[-63.423,2.411],[-64.27,2.497],[-64.368,3.797],[-64.816,4.056],[-63.093,3.771],[-60.967,4.536],[-60.601,4.918],[-60.734,5.2],[-60.214,5.244],[-59.981,5.014],[-60.111,4.575],[-59.767,4.424],[-59.538,3.959],[-59.815,3.606],[-59.975,2.755],[-59.646,1.787],[-59.031,1.318],[-58.54,1.268],[-57.336,1.949],[-55.996,1.818],[-55.973,2.51],[-55.098,2.524],[-54.088,2.106],[-53.779,2.377],[-53.418,2.053],[-52.94,2.125],[-51.658,4.156],[-51.317,4.203],[-50.509,1.902],[-49.974,1.736],[-49.947,1.046],[-50.699,0.223],[-50.388,-0.078],[-48.621,-0.235],[-48.584,-1.238],[-47.825,-0.582],[-46.11,-1.152],[-46.754,-2.559]]]}},{"id":"BRA-SAL","country":"BRA","city":"Salvador","lon":-38.506,"lat":-12.971,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-42.334,-17.237],[-46.754,-2.559],[-46.11,-1.152],[-44.906,-1.552],[-44.418,-2.138],[-44.582,-2.691],[-43.419,-2.383],[-41.473,-2.912],[-39.979,-2.873],[-38.5,-3.701],[-37.223,-4.821],[-35.598,-5.15],[-35.235,-5.465],[-34.73,-7.343],[-35.128,-8.996],[-37.047,-11.041],[-38.424,-13.038],[-38.674,-13.058],[-38.953,-13.793],[-38.882,-15.667],[-39.267,-17.868],[-39.584,-18.262],[-39.619,-18.523],[-42.334,-17.237]]]}},{"id":"BRA-POR","country":"BRA","city":"Porto Alegre","lon":-51.23,"lat":-30.034,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-56.805,-21.21],[-48.498,-27.099],[-48.475,-27.176],[-48.888,-28.674],[-49.587,-29.224],[-50.697,-30.984],[-52.256,-32.245],[-52.712,-33.197],[-53.374,-33.768],[-53.651,-33.202],[-53.21,-32.728],[-53.788,-32.047],[-55.602,-30.854],[-55.973,-30.883],[-56.976,-30.11],[-57.625,-30.216],[-55.162,-27.882],[-53.649,-26.923],[-53.628,-26.125],[-54.13,-25.548],[-54.625,-25.739],[-54.293,-24.021],[-54.653,-23.84],[-55.401,-23.957],[-55.798,-22.357],[-56.473,-22.086],[-56.882,-22.282],[-57.937,-22.09],[-57.882,-20.956],[-56.805,-21.21]]]}},{"id":"CHL-SAN","country":"CHL","city":"Santiago","lon":-70.669,"lat":-33.448,"defense":7,"geometry":{"type":"MultiPolygon","coordinates":[[[[-71.921,-35.094],[-70.467,-31.62],[-70.074,-33.091],[-69.815,-33.274],[-69.817,-34.194],[-70.388,-35.17],[-70.365,-36.005],[-70.484,-36.108],[-71.921,-35.094]]],[[[-69.921,-30.316],[-69.919,-30.336],[-69.953,-30.393],[-69.921,-30.316]]]]}},{"id":"CHL-VAL","country":"CHL","city":"Valparaíso","lon":-71.627,"lat":-33.047,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-72.36,-34.929],[-71.438,-32.419],[-71.669,-30.921],[-71.37,-30.096],[-71.49,-28.861],[-71.231,-28.32],[-69.681,-28.523],[-70.014,-29.368],[-69.921,-30.316],[-70.535,-31.365],[-70.467,-31.62],[-71.921,-35.094],[-72.36,-34.929]]]}},{"id":"CHL-CON","country":"CHL","city":"Concepción","lon":-73.051,"lat":-36.827,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-71.921,-35.094],[-70.484,-36.108],[-71.122,-36.658],[-71.119,-37.577],[-70.815,-38.553],[-71.414,-38.916],[-71.916,-40.832],[-71.747,-42.051],[-72.149,-42.255],[-71.915,-43.409],[-71.464,-43.788],[-71.794,-44.207],[-71.33,-44.408],[-71.223,-44.784],[-71.593,-44.945],[-74.605,-45.339],[-74.352,-44.103],[-73.24,-44.455],[-72.718,-42.383],[-73.389,-42.118],[-73.701,-43.366],[-74.332,-43.225],[-73.677,-39.942],[-73.218,-39.259],[-73.588,-37.156],[-73.167,-37.124],[-72.36,-34.929],[-71.921,-35.094]]]}},{"id":"CHL-ANT","country":"CHL","city":"Antofagasta","lon":-70.398,"lat":-23.65,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-71.231,-28.32],[-70.905,-27.64],[-70.091,-21.393],[-70.373,-18.348],[-69.858,-18.093],[-69.59,-17.58],[-69.1,-18.26],[-68.967,-18.982],[-68.442,-19.405],[-68.757,-20.373],[-67.828,-22.873],[-67.107,-22.736],[-66.985,-22.986],[-67.328,-24.025],[-68.418,-24.519],[-68.386,-26.185],[-68.595,-26.507],[-68.296,-26.899],[-69.681,-28.523],[-71.231,-28.32]]]}},{"id":"CHL-ARE","country":"CHL","city":"Punta Arenas","lon":-70.912,"lat":-53.165,"defense":7,"geometry":{"type":"MultiPolygon","coordinates":[[[[-71.593,-44.945],[-71.659,-44.974],[-71.552,-45.561],[-71.917,-46.885],[-72.447,-47.739],[-72.331,-48.244],[-72.648,-48.879],[-73.415,-49.318],[-73.328,-50.379],[-72.976,-50.741],[-72.31,-50.677],[-72.329,-51.426],[-71.915,-52.009],[-68.572,-52.299],[-69.461,-52.292],[-70.845,-52.899],[-71.006,-53.833],[-71.43,-53.856],[-72.558,-53.531],[-74.947,-52.263],[-75.26,-51.629],[-74.977,-51.043],[-75.48,-50.378],[-75.608,-48.674],[-75.183,-47.712],[-74.127,-46.939],[-75.644,-46.648],[-74.692,-45.764],[-74.605,-45.339],[-71.593,-44.945]]],[[[-68.633,-54.869],[-66.96,-54.897],[-67.291,-55.301],[-68.149,-55.612],[-71.006,-55.054],[-73.285,-53.958],[-74.663,-52.837],[-71.108,-54.074],[-70.592,-53.616],[-70.267,-52.931],[-69.346,-52.518],[-68.634,-52.636],[-68.633,-54.869]]]]}},{"id":"BOL-LAP","country":"BOL","city":"La Paz","lon":-68.119,"lat":-16.49,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-65.451,-16.373],[-68.61,-19.92],[-68.442,-19.405],[-68.967,-18.982],[-69.1,-18.26],[-69.59,-17.58],[-68.96,-16.501],[-69.39,-15.66],[-69.16,-15.324],[-69.34,-14.953],[-68.949,-14.454],[-68.88,-12.9],[-68.665,-12.561],[-69.53,-10.952],[-68.271,-11.015],[-66.647,-9.931],[-65.338,-9.762],[-65.402,-11.566],[-64.406,-12.388],[-65.451,-16.373]]]}},{"id":"BOL-SUC","country":"BOL","city":"Sucre","lon":-65.259,"lat":-19.037,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-65.451,-16.373],[-62.462,-21.325],[-62.685,-22.249],[-62.846,-22.035],[-63.987,-21.994],[-64.377,-22.798],[-64.965,-22.076],[-66.273,-21.832],[-67.107,-22.736],[-67.828,-22.873],[-68.757,-20.373],[-68.61,-19.92],[-65.451,-16.373]]]}},{"id":"BOL-SCZ","country":"BOL","city":"Santa Cruz","lon":-63.183,"lat":-17.784,"defense":7,"geometry":{"type":"Polygon","coordinates":[[[-65.451,-16.373],[-64.406,-12.388],[-64.316,-12.462],[-63.196,-12.627],[-61.713,-13.489],[-61.084,-13.479],[-60.503,-13.776],[-60.251,-15.077],[-60.543,-15.094],[-60.158,-16.258],[-58.241,-16.3],[-58.281,-17.272],[-57.735,-17.552],[-57.498,-18.174],[-57.95,-19.4],[-57.854,-19.97],[-58.166,-20.177],[-58.183,-19.868],[-59.115,-19.357],[-61.786,-19.634],[-62.266,-20.514],[-62.462,-21.325],[-65.451,-16.373]]]}}];
 </script>
 <script>
-/* GREENWATCH: GLOBAL COMMAND v0.8 — self-contained single-player prototype.
+/* GREENWATCH: GLOBAL COMMAND v0.9 — self-contained single-player prototype.
    World geometry is shipped offline. No external APIs, frameworks or server required. */
 (()=>{
 'use strict';
@@ -356,14 +381,15 @@ if(!Array.isArray(WORLD)){document.body.innerHTML='<p style="color:#bff;padding:
 const COUNTRIES=Object.fromEntries(WORLD.map(c=>[c.id,c]));
 const SIDES={player:{name:'GREENWATCH',color:'#81d899'},red:{name:'ROTE DIREKTIVE',color:'#c26d66'},amber:{name:'BERNSTEIN-BÜNDNIS',color:'#d4b573'},neutral:{name:'NEUTRAL',color:'#8c9074'}};
 const GEONAMES={URY:'Uruguay',ARG:'Argentinien',BRA:'Brasilien',PRY:'Paraguay',CHL:'Chile',PER:'Peru',BOL:'Bolivien',COL:'Kolumbien',ECU:'Ecuador',VEN:'Venezuela',ZAF:'Südafrika',NAM:'Namibia',DEU:'Deutschland',FRA:'Frankreich',USA:'USA',RUS:'Russland',CHN:'China',AUS:'Australien'};
-const SAVEKEY='greenwatch-global-command-v08';
+const SAVEKEY='greenwatch-global-command-v09';
+const SAVEKEY_V08='greenwatch-global-command-v08';
 const MIGRATE_SAVEKEY='greenwatch-global-command-v06';
 const PREV_SAVEKEY='greenwatch-global-command-v05';
 const OLD_SAVEKEY='greenwatch-global-command-v04';
 const OLDER_SAVEKEY='greenwatch-global-command-v03';
 const OLDEST_SAVEKEY='greenwatch-global-command-v02';
 const LEGACY_SAVEKEY='greenwatch-global-command-v01';
-const COST={army:90,armor:160,recon:75,air:110,navy:100,mobile:75,radar:130,base:200,fort:80,repair:65,reinforce:40};
+const COST={army:90,armor:160,recon:75,air:110,navy:100,mobile:75,radar:130,flak:95,sam:165,base:200,fort:80,repair:65,reinforce:40};
 const BASELOC=[-56.164,-34.901];
 const UNITMETA={army:{name:'INFANTERIE',power:8,full:'Infanterieverband'},armor:{name:'PANZER',power:14,full:'Panzerverband'},recon:{name:'SPÄHER',power:3,full:'Aufklärungstrupp'},navy:{name:'NAVY',power:5,full:'Patrouillenschiff'},air:{name:'AIR FORCE',power:5,full:'Kampfflugzeug'},mobile:{name:'RADAR',power:0,full:'Mobiles Radarsystem'}};
 const isGroundCombat=u=>u&&['army','armor'].includes(u.type);
@@ -380,6 +406,8 @@ const SVGGLYPH={
  mobile:'<rect x="2" y="16" width="17" height="7" rx="1"/><path d="M19 18h6l3 5H19M10 16l2-5M7 11q5-10 10 0M4 8q8-14 16 0"/><circle cx="8" cy="25" r="2"/><circle cx="23" cy="25" r="2"/>',
  radar:'<path d="M7 25h16M12 25l2-9 2 9M14 16L8 9M14 16l8-6"/><path d="M7 8q8-8 16 0M3 5q12-12 25 0"/>',
  base:'<path d="M5 24V9l9-6 9 6v15H5zM11 24v-8h6v8M5 13h18M9 9h2m6 0h2"/>',
+ flak:'<path d="M4 24h22M8 23l3-6h7l4 6M14 17v-8M14 9l-6-3M14 9l6-3M6 5q8-7 16 0M4 11q10-10 20 0"/>',
+ sam:'<path d="M4 24h22M9 23l2-8h7l2 8M13 15L9 7 20 4 17 15M17 7l7-5M13 7l-1-5"/>',
  fort:'<path d="M5 26V5h5v5h4V5h5v5h4V5h4v21H5zM12 26v-8h8v8"/>',
  repair:'<path d="M6 23l12-12m-5-6a8 8 0 0 0 10 10L13 25a6 6 0 0 1-8-8L15 7a8 8 0 0 0-2-2z"/>',
  reinforce:'<path d="M14 3v23M2 14h24M5 5l18 18M23 5L5 23"/>'
@@ -402,7 +430,9 @@ let needsUI=true,lastUI=0,lastFrame=0,lastAutosave=0,toastTimeout=0,radarSweep=0
 let showSupplyLines=true,showRadarRings=true,showAirContacts=true,commandSheetOpen=false,unitFilter='all';
 const mapUnitHitZones=[];
 let modalType='briefing';
-const BUILD_TIMES={army:10,armor:18,recon:9,air:16,navy:16,mobile:11,radar:20,base:24,fort:14,repair:8,reinforce:7};
+let pendingOrder=null,commandUnit=null,showAreaDock=false;
+let radarFriendSelected=null;
+const BUILD_TIMES={army:10,armor:18,recon:9,air:16,navy:16,mobile:11,radar:20,flak:14,sam:23,base:24,fort:14,repair:8,reinforce:7};
 const worldCanvas=$('world-canvas'),radarCanvas=$('radar-canvas');
 const wctx=worldCanvas.getContext('2d'),rctx=radarCanvas.getContext('2d');
 const pointers={down:false,x:0,y:0,originalX:0,originalY:0,moved:false};
@@ -419,7 +449,7 @@ function newState(){
     {id:'F-01',type:'air',country:'URY',power:5,order:null}
   ];
   const radars=[{id:'RDR-01',type:'base',country:'URY',lon:BASELOC[0],lat:BASELOC[1],range:750,label:'HQ URUGUAY'}];
-  const s={version:8,buildQueue:[],nextJob:1,enemyForces:[{id:"RD-01",faction:"red",country:"CHL",power:12,order:null},{id:"RD-02",faction:"red",country:"PER",power:10,order:null},{id:"AM-01",faction:"amber",country:"ZAF",power:11,order:null},{id:"AM-02",faction:"amber",country:"NAM",power:9,order:null}],sectors:{},enemyOrders:[],nextDispatch:32,recon:{},nextRaid:42,alertTrack:null,activity:[],time:0,speed:1,paused:false,supplies:250,score:0,baseHp:100,countries,units,radars,bases:['URY'],known:{URY:true,ARG:true,BRA:true},tracks:[],log:[],nextUnit:3,nextRadar:2,nextTrack:1,nextGroup:1,aiTimer:22,won:false,over:false,intelOrders:[],milestones:[]};
+  const s={version:9,defenses:[],nextDefense:1,buildQueue:[],nextJob:1,enemyForces:[{id:"RD-01",faction:"red",country:"CHL",power:7,order:null},{id:"RD-02",faction:"red",country:"PER",power:6,order:null},{id:"AM-01",faction:"amber",country:"ZAF",power:7,order:null},{id:"AM-02",faction:"amber",country:"NAM",power:6,order:null}],sectors:{},enemyOrders:[],nextDispatch:32,recon:{},nextRaid:100,alertTrack:null,activity:[],time:0,speed:1,paused:false,supplies:360,score:0,baseHp:100,countries,units,radars,bases:['URY'],known:{URY:true,ARG:true,BRA:true},tracks:[],log:[],nextUnit:3,nextRadar:2,nextTrack:1,nextGroup:1,aiTimer:65,won:false,over:false,intelOrders:[],milestones:[]};
   initSectors(s);
   for(let i=0;i<12;i++)spawnTrack(s);
   return s;
@@ -430,7 +460,7 @@ function initSectors(s){
     if(s.sectors[z.id])continue;
     let side=s.countries[z.country]?.owner||'neutral';
     if(z.id==='URY-MON'&&side==='neutral')side='player'; // initial HQ enclave, not all Uruguay
-    s.sectors[z.id]={owner:side,defense:z.defense};
+    s.sectors[z.id]={owner:side,defense:Math.max(3,z.defense-1)};
   }
 }
 function sectorOwner(id){return state.sectors?.[id]?.owner||'neutral';}
@@ -474,16 +504,16 @@ function nextSectorForCountry(country){const chosen=selectedSector&&SECTOR_MAP[s
 
 function initial(){
   try{
-    let json=localStorage.getItem(SAVEKEY)||localStorage.getItem(MIGRATE_SAVEKEY)||localStorage.getItem(PREV_SAVEKEY)||localStorage.getItem(OLD_SAVEKEY)||localStorage.getItem(OLDER_SAVEKEY)||localStorage.getItem(OLDEST_SAVEKEY)||localStorage.getItem(LEGACY_SAVEKEY);
+    let json=localStorage.getItem(SAVEKEY)||localStorage.getItem(SAVEKEY_V08)||localStorage.getItem(MIGRATE_SAVEKEY)||localStorage.getItem(PREV_SAVEKEY)||localStorage.getItem(OLD_SAVEKEY)||localStorage.getItem(OLDER_SAVEKEY)||localStorage.getItem(OLDEST_SAVEKEY)||localStorage.getItem(LEGACY_SAVEKEY);
     if(json){const loaded=JSON.parse(json);
-      if([1,2,3,4,5,6,8].includes(loaded.version)&&loaded.countries&&loaded.units&&loaded.radars&&loaded.tracks){
-        state=loaded;state.version=8;state.buildQueue??=[];state.nextJob??=1;state.enemyForces??=[{id:"RD-01",faction:"red",country:"CHL",power:12,order:null},{id:"AM-01",faction:"amber",country:"ZAF",power:11,order:null}];initSectors(state);state.enemyOrders??=[];state.nextDispatch??=state.time+30;state.paused=false;state.nextRaid??=state.time+45;state.alertTrack??=null;state.activity??=[];state.intelOrders||=[];state.milestones||=[];state.nextGroup||=1;state.recon||={};
+      if([1,2,3,4,5,6,8,9].includes(loaded.version)&&loaded.countries&&loaded.units&&loaded.radars&&loaded.tracks){
+        state=loaded;state.version=9;state.defenses??=[];state.nextDefense??=1;state.buildQueue??=[];state.nextJob??=1;state.enemyForces??=[{id:"RD-01",faction:"red",country:"CHL",power:7,order:null},{id:"AM-01",faction:"amber",country:"ZAF",power:7,order:null}];initSectors(state);state.enemyOrders??=[];if(loaded.version<9){for(const enemy of state.enemyForces)enemy.power=Math.min(enemy.power,8);for(const order of state.enemyOrders)order.power=Math.min(order.power,7);state.aiTimer=Math.max(55,state.aiTimer||0);state.nextRaid=Math.max(state.time+115,state.nextRaid||0);}state.nextDispatch??=state.time+30;state.paused=false;state.nextRaid??=state.time+45;state.alertTrack??=null;state.activity??=[];state.intelOrders||=[];state.milestones||=[];state.nextGroup||=1;state.recon||={};
         for(const c of Object.values(state.countries))c.fort??=0;
-        toast(loaded.version===8?'Spielstand geladen.':'Spielstand aus früherer Version übernommen.');return;
+        toast(loaded.version===9?'Spielstand geladen.':'Spielstand aus früherer Version übernommen.');return;
       }
     }
   }catch(e){console.warn('Cannot load save',e);}
-  state=newState();log('HQ URUGUAY: BASIS IN BETRIEB','good');log('Auftrag: Erobere 3 Länder und schütze das Hauptquartier.');log('Wähle A-01 und erteile den Befehl für Uruguay.','warn');openModal('briefing');
+  state=newState();log('HQ URUGUAY: BASIS IN BETRIEB','good');log('Auftrag: Erobere 3 Länder und schütze das Hauptquartier.');log('Tippe einen Verband direkt auf der Karte an. Wähle eine Aktion und dann ein Ziel.','good');
 }
 function log(message,type='normal'){
   if(!state)return;state.log.unshift({t:Math.round(state.time),text:message,type});state.log=state.log.slice(0,60);needsUI=true;
@@ -542,7 +572,7 @@ function spawnTrack(s){
 function spawnRaid(){
   if(state.over)return;
   const target=state.bases.includes('URY')?'URY':state.bases[0],p=target==='URY'?BASELOC:center(target);
-  const a=rnd(0,Math.PI*2),distance=rnd(820,1030);
+  const a=rnd(0,Math.PI*2),distance=rnd(910,1160);
   const lon=p[0]+Math.cos(a)*distance/(111.2*Math.max(.35,Math.cos(rad(p[1]))));
   const lat=p[1]+Math.sin(a)*distance/111.2;
   const heading=Math.atan2((p[1]-lat)*111.2,(p[0]-lon)*111.2*Math.cos(rad(lat)));
@@ -579,7 +609,7 @@ function updateTracks(dt){
     if(t.raid){
       if(canSeeTrack(t))radarAlert(t);
       if(dist(t.lon,t.lat,...(t.targetBase==='URY'?BASELOC:center(t.targetBase)))<65){
-        const damage=22;state.baseHp=Math.max(0,state.baseHp-damage);
+        const damage=12;state.baseHp=Math.max(0,state.baseHp-damage);
         log(`LUFTANGRIFF: ${t.id} erreichte die Basis! HQ -${damage}%`,'bad');
         toast(`LUFTANGRIFF! HQ -${damage}% — mehr Radar-/Abfangschutz nötig.`,true);
         state.activity.push({id:t.targetBase,end:state.time+20});eliminated.push(t.id);needsUI=true;
@@ -588,7 +618,7 @@ function updateTracks(dt){
   }
   state.tracks=state.tracks.filter(t=>t.life>0 && Math.abs(t.lon)<185 && Math.abs(t.lat)<85 && !eliminated.includes(t.id));
   if(state.tracks.length<12)spawnTrack(state);
-  if(state.nextRaid<=state.time){spawnRaid();state.nextRaid=state.time+135+rnd(0,28);}
+  if(state.nextRaid<=state.time){spawnRaid();state.nextRaid=state.time+240+rnd(0,70);}
   state.activity=state.activity.filter(x=>x.end>state.time);
 }
 
@@ -730,17 +760,17 @@ function aiTurn(){
   const faction=Math.random()<.5?'red':'amber';const frontier=WORLD.filter(c=>owner(c.id)===faction);
   if(!frontier.length)return;
   let choices=[];
-  for(const c of frontier)for(const id of c.neighbors){if(owner(id)==='neutral')choices.push({from:c.id,id});else if(owner(id)==='player'&&state.time>65&&Math.random()<.78)choices.push({from:c.id,id});}
+  for(const c of frontier)for(const id of c.neighbors){if(owner(id)==='neutral')choices.push({from:c.id,id});else if(owner(id)==='player'&&state.time>195&&Math.random()<.28)choices.push({from:c.id,id});}
   if(!choices.length)return;
   const pick=choices[Math.floor(Math.random()*choices.length)],defender=state.countries[pick.id];
   if(owner(pick.id)==='player'){
     if(state.enemyOrders.some(o=>o.id===pick.id))return;
     const source=state.enemyForces.find(e=>e.country===pick.from&&e.faction===faction&&!e.order);
-    state.enemyOrders.push({id:pick.id,from:pick.from,faction,power:(source?.power||10)+Math.floor(Math.random()*4),remaining:22});
+    state.enemyOrders.push({id:pick.id,from:pick.from,faction,power:Math.max(4,(source?.power||7)-2)+Math.floor(Math.random()*2),remaining:40});
     state.speed=1;log(`FRONTALARM: ${SIDES[faction].name} marschiert von ${name(pick.from)} auf ${name(pick.id)}. 22 Sekunden Reaktionszeit!`,'bad');toast('FRONTALARM: '+name(pick.id)+' bedroht!',true);needsUI=true;return;
   }
   const localForce=state.enemyForces.find(e=>e.faction===faction&&e.country===pick.from&&!e.order);
-  const pwr=(localForce?localForce.power:9)+Math.floor(Math.random()*4);
+  const pwr=(localForce?localForce.power:7)+Math.floor(Math.random()*2);
   const garrison=state.units.filter(u=>isGroundCombat(u)&&u.country===pick.id&&!u.order).reduce((a,u)=>a+u.power,0);
   if(pwr>=defender.defense+(defender.fort||0)*3+Math.min(12,garrison)){
     const previous=defender.owner;defender.owner=faction;syncSectors(pick.id,faction);defender.defense=6;defender.fort=0;if(getIntel().has(pick.id))state.activity.push({id:pick.id,end:state.time+18});
@@ -802,7 +832,7 @@ function build(kind){
   if(kind==='radar'&&state.radars.some(r=>r.country===id&&r.type==='fixed'))return toast('In diesem Land existiert bereits ein stationäres Zusatzradar.',true);
   const pending=state.buildQueue.filter(job=>job.country===id);
   if(kind==='fort'&&(state.countries[id].fort||0)+pending.filter(j=>j.kind==='fort').length>=3)return toast('Maximal drei Befestigungsstufen einschließlich Warteschlange.',true);
-  if(['base','radar'].includes(kind)&&pending.some(j=>j.kind===kind))return toast('Gleichartiges Gebäude bereits im Bau.',true);
+  if(['base','radar','flak','sam'].includes(kind)&&pending.some(j=>j.kind===kind))return toast('Gleichartiges Gebäude bereits im Bau.',true);
   if(kind==='reinforce'&&pending.some(j=>j.kind==='reinforce'&&j.unitId===selectedUnit))return toast('Dieser Verband erhält bereits Verstärkungen.',true);
   state.supplies-=COST[kind];
   state.buildQueue.push({id:state.nextJob++,country:id,kind,unitId:selectedUnit,remaining:BUILD_TIMES[kind],total:BUILD_TIMES[kind]});
@@ -816,6 +846,10 @@ function finishBuild(job){
   if(kind==='fort'){state.countries[id].fort++;state.countries[id].defense+=1;log(`${name(id)}: Befestigung Stufe ${state.countries[id].fort} errichtet.`,'good');}
   else if(kind==='repair'){state.baseHp=Math.min(100,state.baseHp+25);log(`HQ repariert: Integrität ${state.baseHp}%.`,'good');}
   else if(kind==='reinforce'){const u=state.units.find(u=>u.id===selectedUnit);u.power=Math.min(maxPower(u),u.power+3);log(`${u.id} verstärkt: Stärke ${u.power}/10.`,'good');}
+  else if(kind==='flak'||kind==='sam'){
+    const pos=id==='URY'?BASELOC:center(id);state.defenses.push({id:(kind==='flak'?'FLAK-':'SAM-')+String(state.nextDefense++).padStart(2,'0'),kind,country:id,lon:pos[0],lat:pos[1],cooldown:0,shots:0});
+    log((kind==='flak'?'Flugabwehr':'Raketenabwehr')+' in '+name(id)+' einsatzbereit. Automatik aktiv.','good');
+  }
   else if(kind==='radar'||kind==='base'){
     if(kind==='base')state.bases.push(id);
     let p=(id==='URY'&&kind==='base')?BASELOC:center(id),r={id:'RDR-'+String(state.nextRadar++).padStart(2,'0'),type:kind==='base'?'base':'fixed',country:id,lon:p[0],lat:p[1],range:kind==='base'?750:1050,label:(kind==='base'?'MILITÄRBASIS ':'RADAR ')+name(id).toUpperCase()};
@@ -826,6 +860,27 @@ function finishBuild(job){
   }
   toast('Produktion abgeschlossen: '+kind.toUpperCase());needsUI=true;
   selectedCountry=previousCountry;selectedUnit=state.units.some(x=>x.id===previousUnit)?previousUnit:selectedUnit;
+}
+function advanceAirDefense(dt){
+  state.defenses??=[];
+  for(const b of state.defenses){
+    b.cooldown=Math.max(0,(b.cooldown||0)-dt);
+    if(b.cooldown>0)continue;
+    const reach=b.kind==='sam'?780:390;
+    const targets=state.tracks.filter(t=>t.kind==='hostile' && (t.raid || t.identified==='hostile') && canSeeTrack(t) && dist(b.lon,b.lat,t.lon,t.lat)<=reach);
+    if(!targets.length)continue;
+    targets.sort((a,z)=>dist(b.lon,b.lat,a.lon,a.lat)-dist(b.lon,b.lat,z.lon,z.lat));
+    const t=targets[0]; b.cooldown=b.kind==='sam'?28:12;b.shots=(b.shots||0)+1;
+    const chance=b.kind==='sam'?.92:.69;
+    if(Math.random()<chance){
+      state.tracks=state.tracks.filter(x=>x.id!==t.id);
+      if(state.alertTrack===t.id)state.alertTrack=null;
+      state.score+=b.kind==='sam'?120:70;
+      log(b.id+': '+t.id+' AUTOMATISCH ABGEFANGEN. Basis geschützt.','good');
+      toast('AUTOMATISCHE ABWEHR: '+b.id+' hat '+t.id+' gestoppt.');
+    } else {log(b.id+': '+t.id+' nicht getroffen — nächster Versuch nach Abklingzeit.','warn');}
+    needsUI=true;
+  }
 }
 function advanceBuildQueue(dt){
   for(const job of [...state.buildQueue]){
@@ -855,8 +910,9 @@ function tick(dt){
   // Non-interception orders cannot share the same timer update.
   advanceOrders(speed);
   updateTracks(speed);
+  advanceAirDefense(speed);
   advanceIntel(speed);
-  state.aiTimer-=speed;if(state.aiTimer<=0){state.aiTimer=26+rnd(0,10);aiTurn();}
+  state.aiTimer-=speed;if(state.aiTimer<=0){state.aiTimer=58+rnd(0,25);aiTurn();}
   advanceEnemyOrders(speed);
   if(state.time>=state.nextDispatch)nextDispatch();
   if(state.baseHp<=0&&!state.over){state.over=true;state.paused=true;openModal('defeat');}
@@ -944,6 +1000,20 @@ function drawWorld(w,h){
     wctx.beginPath();outline(wctx,c,w,h);wctx.fillStyle=fill;wctx.fill('evenodd');wctx.lineWidth=camLine(scale);wctx.strokeStyle=intel==='hidden'?'#284638':'#52765b';wctx.stroke();
   }
   drawSectors(w,h,visible);
+  if(pendingOrder){
+    const unit=state.units.find(u=>u.id===selectedUnit);
+    if(unit){
+      const dests=reachableTargets(unit).filter(id=>pendingOrder==='attack'?owner(id)!=='player':pendingOrder==='move'&&isGroundCombat(unit)?owner(id)==='player':true);
+      wctx.save();wctx.setLineDash([5,5]);wctx.lineWidth=2.4;wctx.strokeStyle='#f0d98f';
+      for(const id of dests){
+        const c=COUNTRIES[id];if(!c)continue;
+        wctx.beginPath();outline(wctx,c,w,h);wctx.stroke();
+        const [x,y]=project(...center(id),w,h);
+        if(x>=12&&x<=w-12&&y>=12&&y<=h-12){wctx.fillStyle='#f1dfab';wctx.font='bold 9px Courier New';wctx.textAlign='center';wctx.fillText('⌖ ZIEL',x,y+14);}
+      }
+      wctx.restore();
+    }
+  }
   // Supplied land territories connect to bases through controlled adjacent countries.
   const supply=supplyNetwork();
   if(showSupplyLines){
@@ -1025,6 +1095,13 @@ function drawWorld(w,h){
     wctx.strokeStyle=`rgba(233,205,119,${(.8-p*.8).toFixed(3)})`;wctx.lineWidth=2;wctx.stroke();
   }
   for(const r of state.radars){const [x,y]=project(r.lon,r.lat,w,h);if(x<0||y<0||x>w||y>h)continue;drawBaseMarker(wctx,x,y,r.type==='base'?'HQ':'RDR',r.id===selectedRadar);}
+  for(const b of (state.defenses||[])){
+    const [x,y]=project(b.lon,b.lat,w,h);if(x<-25||y<-25||x>w+25||y>h+25)continue;
+    wctx.save();wctx.fillStyle='#10271b';wctx.strokeStyle=b.kind==='sam'?'#f0dba5':'#95deba';wctx.lineWidth=1.4;
+    wctx.beginPath();wctx.arc(x+17,y+15,13,0,Math.PI*2);wctx.fill();wctx.stroke();
+    wctx.translate(x+17,y+15);wctx.scale(.55,.55);wctx.strokeStyle=b.kind==='sam'?'#f0dba5':'#95deba';wctx.stroke(new Path2D('M-9 7 L0 -8 L9 7 M-12 10 L12 10'));
+    wctx.restore();
+  }
   // Aircraft map symbols can be seen only when detected.
   for(const t of state.tracks){if(!showAirContacts||!canSeeTrack(t))continue;const [x,y]=project(t.lon,t.lat,w,h);if(x<0||y<0||x>w||y>h)continue;drawAirSymbol(wctx,x,y,t.heading,t.identified==='hostile'?'#df8f7a':t.identified==='civil'?'#7adea0':'#dcc17d',camera.zoom>=16?8:6,trackType(t));}
   drawMapUnits(w,h);
@@ -1128,6 +1205,18 @@ function drawBaseMarker(ctx,x,y,label,active){
   else{ctx.beginPath();ctx.arc(0,-5,8,Math.PI*1.1,Math.PI*1.9);ctx.moveTo(-10,-9);ctx.arc(0,-5,12,Math.PI*1.15,Math.PI*1.85);ctx.moveTo(0,-5);ctx.lineTo(0,9);ctx.moveTo(-8,9);ctx.lineTo(8,9);ctx.stroke();ctx.fillRect(-2,-7,4,4);}
   ctx.font='10px Courier New';ctx.fillStyle='#d0f3bd';ctx.fillText(label,14,-6);ctx.restore();
 }
+function friendlyAirPosition(u){
+  const p=positionUnit(u);
+  if(u.order?.intercept){
+    const tgt=state.tracks.find(t=>t.id===u.order.intercept);if(tgt){const k=1-clamp(u.order.remaining/u.order.total,0,1);return [p[0]+(tgt.lon-p[0])*k*.9,p[1]+(tgt.lat-p[1])*k*.9];}
+  }
+  if(u.order)return p;
+  const spin=state.time*.035+state.units.indexOf(u)*2.1;
+  const lat=p[1]+Math.sin(spin)*.37;
+  return [p[0]+Math.cos(spin)*.45/Math.max(.4,Math.cos(rad(p[1]))),lat];
+}
+function friendAircraftForRadar(r){return state.units.filter(u=>u.type==='air'&&dist(r.lon,r.lat,...friendlyAirPosition(u))<=r.range);}
+
 function drawRadar(w,h){
   const r=sensorSelected();if(!r)return;
   rctx.fillStyle='#051009';rctx.fillRect(0,0,w,h);
@@ -1145,7 +1234,7 @@ function drawRadar(w,h){
   for(const [label,a] of [['000',-Math.PI/2],['090',0],['180',Math.PI/2],['270',Math.PI]])rctx.fillText(label,cx+Math.cos(a)*(R+18),cy+Math.sin(a)*(R+18)+3);
   rctx.font='9px Courier New';rctx.fillStyle='#4f8b60';for(let i=1;i<=4;i++)rctx.fillText(Math.round(r.range*i/4)+'',cx+3,cy-R*i/4+11);
   rctx.beginPath();rctx.arc(cx,cy,3,0,Math.PI*2);rctx.fillStyle='#a4fab0';rctx.fill();
-  const contacts=tracksAt(r);
+  const contacts=tracksAt(r),friends=friendAircraftForRadar(r);
   for(const t of contacts){
     const dx=(t.lon-r.lon)*111.2*Math.cos(rad(r.lat)),dy=(t.lat-r.lat)*111.2,x=cx+dx*k,y=cy-dy*k;
     const col=t.identified==='hostile'?'#e49e7a':t.identified==='civil'?'#b9eeb0':'#e4c888';
@@ -1158,8 +1247,15 @@ function drawRadar(w,h){
     if(t.id===selectedTrack){rctx.beginPath();rctx.arc(x,y,16,0,Math.PI*2);rctx.strokeStyle='#e9d59b';rctx.setLineDash([3,3]);rctx.stroke();rctx.setLineDash([]);}
     rctx.fillStyle=col;rctx.font='10px Courier New';rctx.textAlign='left';rctx.fillText(t.id,x+11,y-9);rctx.font='8px Courier New';rctx.fillText('FL'+Math.round(t.altitude/100),x+11,y+2);
   }
+  for(const u of friends){
+    const pos=friendlyAirPosition(u),dx=(pos[0]-r.lon)*111.2*Math.cos(rad(r.lat)),dy=(pos[1]-r.lat)*111.2,x=cx+dx*k,y=cy-dy*k;
+    const heading=u.order?.intercept?-.3:state.time*.035+1.6;
+    drawAirSymbol(rctx,x,y,heading,'#74e8ff',9,'fighter');
+    rctx.font='bold 10px Courier New';rctx.textAlign='left';rctx.fillStyle='#9bedff';rctx.fillText('★ '+u.id+' EIGEN',x+12,y-10);
+    if(radarFriendSelected===u.id){rctx.strokeStyle='#b2ecff';rctx.strokeRect(x-15,y-15,30,30);}
+  }
   rctx.restore();
-  $('radar-contact-count').textContent='TRACKS '+String(contacts.length).padStart(2,'0');
+  $('radar-contact-count').textContent='TRACKS '+String(contacts.length+friends.length).padStart(2,'0');
   $('radar-bearing').textContent='SWEEP '+String(Math.round((radarSweep*180/Math.PI+90)%360)).padStart(3,'0')+'°';
 }
 function render(){
@@ -1170,14 +1266,77 @@ function pointInRing(x,y,ring){let inside=false;for(let i=0,j=ring.length-1;i<ri
 function hitCountry(lon,lat){for(let i=WORLD.length-1;i>=0;i--){const c=WORLD[i],b=c._bounds;if(lon<b[0]||lon>b[2]||lat<b[1]||lat>b[3])continue;for(const polygon of pathsOf(c)){if(pointInRing(lon,lat,polygon[0])&&!polygon.slice(1).some(h=>pointInRing(lon,lat,h)))return c.id;}}return null;}
 function countryBounding(c){let xs=[],ys=[];for(const poly of pathsOf(c))for(const ring of poly)for(let i=0;i<ring.length;i++){xs.push(ring[i][0]);ys.push(ring[i][1]);}return[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];}
 for(const c of WORLD){c._bounds=countryBounding(c);}
+
+function showDock(id,flag){const el=$(id);el.classList.toggle('hidden',!flag);}
+function selectQuickUnit(u){
+  if(!u)return;selectedUnit=u.id;selectedCountry=u.country;pendingOrder=null;commandUnit=u.id;showAreaDock=false;
+  showDock('unit-picker',false);showDock('area-dock',false);
+  if(isMobile())setMobileSheet(false);
+  needsUI=true;updateQuickDocks();
+}
+function beginQuickAction(cmd){
+  const u=state.units.find(x=>x.id===selectedUnit);if(!u)return;
+  if(cmd==='stop'){u.order=null;pendingOrder=null;toast(u.id+': Auftrag angehalten.');updateQuickDocks();return;}
+  if(cmd==='cancel'){pendingOrder=null;commandUnit=null;showAreaDock=false;updateQuickDocks();return;}
+  if(cmd==='info'){tab('operations');setMobileSheet(true);return;}
+  if(cmd==='intercept'){let threat=detectedThreat();if(!threat)return toast('Keine feindliche Luftbedrohung erkannt.');selectedTrack=threat.id;intercept();updateQuickDocks();return;}
+  if(u.order)return toast('Einheit ist unterwegs. Erst Auftrag stoppen.',true);
+  pendingOrder=cmd;commandUnit=u.id;showAreaDock=false;updateQuickDocks();
+}
+function executeQuickTarget(x,y){
+  const [w,h]=sizeCanvas(worldCanvas,wctx),[lon,lat]=unproject(x,y,w,h);
+  const id=hitCountry(lon,lat),u=state.units.find(v=>v.id===selectedUnit);
+  if(!id||!u)return toast('Bitte ein Land auf der Karte auswählen.',true);
+  if(!unitIsAvailable(u,id))return toast('Dieses Gebiet ist für '+u.id+' nicht erreichbar.',true);
+  if(pendingOrder==='attack'&&owner(id)==='player')return toast('Das Gebiet gehört dir bereits. Wähle VERLEGEN.',true);
+  if(pendingOrder==='move'&&isGroundCombat(u)&&owner(id)!=='player')return toast('Feindgebiet: bitte ANGRIFF wählen.',true);
+  selectedCountry=id;
+  const z=camera.zoom>=5.8?sectorAt(lon,lat):null;
+  selectedSector=z&&z.country===id?z.id:sectorGoal(id)?.id||null;
+  if(pendingOrder==='recon')issueRecon();else issueOrder();
+  pendingOrder=null;commandUnit=u.id;showAreaDock=false;needsUI=true;updateQuickDocks();
+}
+function updateQuickDocks(){
+  const u=state.units.find(x=>x.id===commandUnit),pane=$('unit-dock');
+  if(!u||activeView!=='world'){showDock('unit-dock',false);}else{
+    const inMission=u.order;let actions='';
+    if(inMission){actions=`<button data-quick="stop" class="red-cmd">■ STOPP</button><button data-quick="info">DETAILS</button>`;}
+    else if(isGroundCombat(u))actions=`<button class="primary-cmd" data-quick="attack">⚔ ANGRIFF</button><button data-quick="move">➜ VERLEGEN</button><button data-quick="info">DETAILS</button>`;
+    else if(u.type==='air')actions=`<button class="primary-cmd" data-quick="recon">◉ AUFKLÄREN</button><button data-quick="move">✈ VERLEGEN</button><button data-quick="intercept">▲ ABFANGEN</button>`;
+    else actions=`<button class="primary-cmd" data-quick="move">➜ VERLEGEN</button><button data-quick="info">DETAILS</button>`;
+    pane.classList.toggle('waiting',!!pendingOrder);
+    pane.innerHTML=`<div class="gw-dock-head"><strong>${iconSVG(u.type)} ${esc(u.id)} · ${esc(UNITMETA[u.type].name)}</strong><button class="gw-close" data-quick="cancel" aria-label="Schließen">×</button></div><div class="gw-actions">${actions}</div><div class="gw-dock-status ${pendingOrder?'gw-highlight-help':''}">${pendingOrder?'⌖ ZIEL ANTIPPEN · Karte verschieben oder zoomen möglich':inMission?'UNTERWEGS → '+esc(name(inMission.target))+' · '+Math.ceil(inMission.remaining)+'s':'STANDORT '+esc(name(u.country))+' · Stärke '+u.power}</div>`;
+    showDock('unit-dock',true);
+  }
+  const area=$('area-dock'),ok=showAreaDock&&!u&&!pendingOrder&&activeView==='world';
+  if(ok){const ownedArea=owner(selectedCountry)==='player'||state.bases.includes(selectedCountry);
+    area.innerHTML=`<div class="gw-dock-head"><strong>⌖ ${esc(name(selectedCountry))}</strong><button data-area="close" aria-label="Schließen">×</button></div><div class="gw-dock-status">${ownedArea?'EIGENES GEBIET · Gebäude direkt errichten':'FREMDES GEBIET · Truppen wählen, um anzugreifen'}</div><div class="gw-actions">${ownedArea?`<button data-area="flak">FLAK · 95 VP</button><button data-area="sam">RAKETEN · 165 VP</button><button data-area="radar">RADAR</button>`:`<button data-area="units">TRUPPEN WÄHLEN</button>`}</div>`;
+  }
+  showDock('area-dock',ok);
+}
+function setMapUnitList(units){
+  const picker=$('unit-picker');
+  picker.innerHTML='<strong>VERBAND WÄHLEN · direkt befehlen</strong><div class="gw-actions">'+units.map(u=>`<button data-pick="${esc(u.id)}">${iconSVG(u.type)} ${esc(u.id)} · ${esc(UNITMETA[u.type].name)}</button>`).join('')+'</div>';
+  commandUnit=null;showDock('unit-dock',false);showDock('area-dock',false);showDock('unit-picker',true);
+  if(isMobile())setMobileSheet(false);
+}
+function updateRadarDock(){
+  const pane=$('radar-dock');if(activeView!=='radar'){showDock('radar-dock',false);return;}
+  const friend=state.units.find(u=>u.id===radarFriendSelected&&u.type==='air');
+  if(friend){pane.innerHTML=`<div class="gw-dock-head"><strong>✈ ${esc(friend.id)} · EIGENES FLUGZEUG</strong><button data-radarquick="close" aria-label="Schließen">×</button></div><div class="gw-actions"><button data-radarquick="unit" class="primary-cmd">BEFEHLE GEBEN</button><button data-radarquick="close">SCHLIESSEN</button></div>`;showDock('radar-dock',true);return;}
+  const t=state.tracks.find(t=>t.id===selectedTrack);if(!t){showDock('radar-dock',false);return;}
+  pane.innerHTML=`<div class="gw-dock-head"><strong>${esc(t.id)} · ${t.identified?esc(t.identified.toUpperCase()):'UNBEKANNT'}</strong><button data-radarquick="close" aria-label="Schließen">×</button></div><div class="gw-actions"><button data-radarquick="identify">IDENTIFIZIEREN</button><button class="primary-cmd" data-radarquick="intercept" ${t.identified==='civil'?'disabled':''}>ABFANGJÄGER</button></div>`;showDock('radar-dock',true);
+}
+
 function selectMapAt(x,y){
+  if(pendingOrder){executeQuickTarget(x,y);return;}
   const [w,h]=sizeCanvas(worldCanvas,wctx);
   for(const zone of [...mapUnitHitZones].reverse()){
     if(Math.hypot(zone.x-x,zone.y-y)>(isMobile()?Math.max(24,zone.r):zone.r))continue;
     const u=zone.units.find(u=>u.id===selectedUnit)||zone.units[0];
     if(!u)continue;selectedUnit=u.id;selectedCountry=u.country;
-    if(zone.units.length>1 && camera.zoom<16){zoomAt(2.3,x,y);toast(zone.units.length+' Einheiten im Verband · näher heranzoomen für Einzelauswahl.');}
-    else{tab('operations');if(isMobile())setMobileSheet(true);}
+    if(zone.units.length>1){setMapUnitList(zone.units);}
+    else{selectQuickUnit(u);}
     needsUI=true;return;
   }
   for(const t of state.tracks){if(!showAirContacts||!canSeeTrack(t))continue;const [tx,ty]=project(t.lon,t.lat,w,h);if(Math.hypot(tx-x,ty-y)<(isMobile()?21:12)){selectedTrack=t.id;openRadar();needsUI=true;return;}}
@@ -1188,14 +1347,17 @@ function selectMapAt(x,y){
     hit=nearest;
   }
   if(hit){selectedCountry=hit;const [lon,lat]=unproject(x,y,w,h);const z=camera.zoom>=5.8?sectorAt(lon,lat):null;selectedSector=z&&z.country===hit?z.id:sectorGoal(hit)?.id||null;}
-  if(isMobile()&&hit){tab(activeTab==='build'?'build':'operations');document.querySelector('.sidebar-scroll').scrollTop=0;setMobileSheet(true);}
+  if(hit){commandUnit=null;showAreaDock=true;showDock('unit-picker',false);updateQuickDocks();if(isMobile())setMobileSheet(false);}
   needsUI=true;
 }
 function selectRadarAt(x,y){
   const [w,h]=sizeCanvas(radarCanvas,rctx),r=sensorSelected();if(!r)return;const cx=w/2,cy=h/2+11,R=Math.min(w*.44,h*.445),k=R/r.range;
+  let bestFriend=null,fd=isMobile()?32:22;
+  for(const u of friendAircraftForRadar(r)){const pos=friendlyAirPosition(u),x2=cx+(pos[0]-r.lon)*111.2*Math.cos(rad(r.lat))*k,y2=cy-(pos[1]-r.lat)*111.2*k;const d=Math.hypot(x2-x,y2-y);if(d<fd){fd=d;bestFriend=u;}}
+  if(bestFriend){radarFriendSelected=bestFriend.id;selectedTrack=null;setMobileSheet(false);updateRadarDock();return;}
   let best=null,bestD=isMobile()?29:19;
   for(let t of tracksAt(r)){let tx=cx+(t.lon-r.lon)*111.2*Math.cos(rad(r.lat))*k,ty=cy-(t.lat-r.lat)*111.2*k,d=Math.hypot(tx-x,ty-y);if(d<bestD){best=t;bestD=d;}}
-  if(best){selectedTrack=best.id;tab('intel');if(isMobile())setMobileSheet(true);needsUI=true;}
+  if(best){selectedTrack=best.id;radarFriendSelected=null;setMobileSheet(false);updateRadarDock();needsUI=true;}
 }
 function zoomAt(mult,x=null,y=null){
   const rect=worldCanvas.getBoundingClientRect(),w=rect.width,h=rect.height;
@@ -1389,7 +1551,7 @@ function operationsHTML(){
 
 function buildHTML(){
   const id=selectedCountry,c=COUNTRIES[id],yes=owner(id)==='player'||state.bases.includes(id);
-  const defs=[['army','INFANTERIE','Kann Länder einnehmen und eigene Gebiete sichern.'],['armor','PANZERVERBAND','14 Angriffsstärke; schnelle Offensiven, teurer als Infanterie.'],['recon','SPÄHER','Schnell und günstig; erkundet Nachbargebiete, kann keine Länder einnehmen.'],['air','KAMPFFLUGZEUG','Klärt auf und fängt feindliche Radarkontakte ab.'],['navy','PATROUILLENSCHIFF','Überwacht Seewege und unterstützt Küsten.'],['mobile','MOBILES RADAR','470 km Luftüberwachung. Kann umziehen.'],['radar','FESTE RADARSTATION','1.050 km Reichweite. Erkennt Anflüge früher.'],['base','MILITÄRBASIS','Vergrößert dein Netz aus Versorgung und Radar.'],['fort','BEFESTIGUNG','Schützt eigenes Land, maximal Stufe 3.'],['reinforce','TRUPPE VERSTÄRKEN','Stellt Stärke einer Armee wieder her.'],['repair','HQ REPARIEREN','Stellt 25 Prozentpunkte Basisintegrität her.']];
+  const defs=[['army','INFANTERIE','Kann Länder einnehmen und eigene Gebiete sichern.'],['armor','PANZERVERBAND','14 Angriffsstärke; schnelle Offensiven, teurer als Infanterie.'],['recon','SPÄHER','Schnell und günstig; erkundet Nachbargebiete, kann keine Länder einnehmen.'],['air','KAMPFFLUGZEUG','Klärt auf und fängt feindliche Radarkontakte ab.'],['navy','PATROUILLENSCHIFF','Überwacht Seewege und unterstützt Küsten.'],['mobile','MOBILES RADAR','470 km Luftüberwachung. Kann umziehen.'],['radar','FESTE RADARSTATION','1.050 km Reichweite. Erkennt Anflüge früher.'],['flak','AUTOMATISCHE FLAK','390 km Reichweite, schießt automatisch auf erkannte Angreifer.'],['sam','RAKETENABWEHR','780 km Reichweite, automatische Langstrecken-Abwehr.'],['base','MILITÄRBASIS','Vergrößert dein Netz aus Versorgung und Radar.'],['fort','BEFESTIGUNG','Schützt eigenes Land, maximal Stufe 3.'],['reinforce','TRUPPE VERSTÄRKEN','Stellt Stärke einer Armee wieder her.'],['repair','HQ REPARIEREN','Stellt 25 Prozentpunkte Basisintegrität her.']];
   const queueHTML=`<div class="module"><div class="panel-title">BAUWARTESCHLANGE · ${state.buildQueue.length} AUFTRÄGE</div>${state.buildQueue.map(j=>{const prog=Math.max(0,Math.min(100,100*(1-j.remaining/j.total)));return `<div class="queue-item"><strong>${esc(j.kind.toUpperCase())} · ${esc(name(j.country))}</strong><span>${Math.ceil(j.remaining)}s</span><div class="queue-bar"><i style="width:${prog.toFixed(0)}%"></i></div><button data-cancel-job="${j.id}">ABBRECHEN · 60% VP ZURÜCK</button></div>`;}).join('')||'<p class="panel-desc">Keine laufenden Bauaufträge. Ausbildung und Gebäude benötigen jetzt Zeit.</p>'}</div>`;
   const sites=[...new Set([...state.bases,...WORLD.filter(c=>owner(c.id)==='player').map(c=>c.id)])].slice(0,16);
   return `<div class="section-assist"><strong>SO BAUST DU:</strong> ① Unten Bauort auswählen ② Gebäude oder Einheit antippen. Der Auftrag startet in der Warteschlange. Nach Ablauf erscheint die Einheit oder Station auf der Karte.</div>${queueHTML}<div class="panel-title">BAUORT WÄHLEN</div><div class="target-list">${sites.map(site=>`<button class="target-choice ${site===id?'active':''}" data-site="${site}"><span class="symbol-mini">⌂</span>${esc(name(site))}<small>${state.bases.includes(site)?'MILITÄRBASIS':'EIGENES LAND'}</small></button>`).join('')}</div><div class="selection-card"><h3>${esc(name(id))}</h3><p class="panel-desc" style="margin-top:7px">${yes?'Bauort freigegeben. Tippe auf eine Aktion, um sie zu produzieren.':'Hier kannst du noch nicht bauen. Wähle ein eigenes Land oder eine Basis.'}</p>${detailRows([['VERFÜGBARE VP',Math.floor(state.supplies).toString()],['EINKOMMEN',incomePerMinute()+' VP / MIN'],['VERSORGUNG',isSupplied(id)?'VERBUNDEN':'ABGESCHNITTEN']])}</div><div><div class="panel-title">EINHEITEN & GEBÄUDE</div>${defs.map(([key,title,description])=>`<div class="build-row" style="margin-bottom:7px"><div class="build-entry"><span class="build-symbol">${iconSVG(key)}</span><div><strong>${title}</strong><div class="sub">${description}</div></div></div><button data-build="${key}" aria-label="${title} für ${COST[key]} Versorgungspunkte bauen" ${!yes||state.supplies<COST[key]||(!isSupplied(id)&&key!=='base')||(key==='navy'&&!c.coastal)||(key==='base'&&state.bases.includes(id))||(key==='fort'&&(owner(id)!=='player'||state.countries[id].fort>=3))||(key==='repair'&&(id!=='URY'||state.baseHp>=100))||(key==='reinforce'&&!state.units.some(u=>u.id===selectedUnit&&isGroundCombat(u)&&u.country===id&&!u.order&&u.power<maxPower(u)))?'disabled':''}>${COST[key]} VP</button></div>`).join('')}</div><div class="tip">TIPP: Eine fertige Radarstation wird auf der Karte markiert und vergrößert deine Luftüberwachung.</div>`;
@@ -1420,12 +1582,13 @@ function frontlineHTML(){
 function intelHTML(){
   const r=sensorSelected(),t=state.tracks.find(x=>x.id===selectedTrack),radars=activeRadars();
   const contacts=r?tracksAt(r).sort((a,b)=>Number(!!b.raid)-Number(!!a.raid)):[];
-  const stat=`<div class="section-assist"><strong>RADAR IST DEINE FRÜHWARNUNG.</strong> Unbekannte Anflüge auf das HQ verursachen Schäden, wenn du sie nicht rechtzeitig abfängst. Identifiziere den Kontakt und sende einen freien Abfangjäger. Neue Radarstationen vergrößern den Erfassungsbereich.</div><div class="selection-card"><div class="panel-title">SENSOREN IM NETZ</div>${detailRows([['STATIONEN',String(radars.length)],['ERFASSTE TRACKS',String(contacts.length)],['PUNKTE',String(state.score)],['HQ INTEGRITÄT',state.baseHp+'%']])}</div>`;
+  const stat=`<div class="section-assist"><strong>RADAR IST DEINE FRÜHWARNUNG.</strong> Unbekannte Anflüge auf das HQ verursachen Schäden, wenn du sie nicht rechtzeitig abfängst. Identifiziere den Kontakt und sende einen freien Abfangjäger. Neue Radarstationen vergrößern den Erfassungsbereich.</div><div class="selection-card"><div class="panel-title">SENSOREN IM NETZ</div>${detailRows([['STATIONEN',String(radars.length)],['ERFASSTE TRACKS',String(contacts.length)],['PUNKTE',String(state.score)],['HQ INTEGRITÄT',state.baseHp+'%'],['AUTO-FLAK / RAKETEN',(state.defenses||[]).filter(d=>d.kind==='flak').length+' / '+(state.defenses||[]).filter(d=>d.kind==='sam').length]])}</div>`;
   const stations=`<div><div class="panel-title">RADARSTATIONEN</div><div class="unit-list">${radars.map(x=>`<button class="unit-row ${x.id===selectedRadar?'active':''}" data-radar="${x.id}"><span class="unit-symbol">◎</span><span class="unit-info"><strong>${esc(x.id)} · ${esc(x.type.toUpperCase())}</strong><small>${esc(name(x.country))} · ${x.range} km</small></span><span>→</span></button>`).join('')}</div></div>`;
   let trackInfo=t?`<div class="selection-card"><div class="panel-title">GEWÄHLTER RADARKONTAKT</div><header><h3>${esc(t.id)}</h3><span class="tag ${t.identified==='hostile'?'enemy':'neutral'}">${t.identified==='hostile'?'BEDROHUNG':t.identified==='civil'?'ZIVIL':t.identified==='unknown'?'UNGEKLÄRT':'UNIDENTIFIZIERT'}</span></header>${detailRows([['HÖHE',Math.round(t.altitude)+' ft'],['GESCHW.',Math.round(t.speed)+' km/h'],['KURS',Math.round((t.heading*180/Math.PI+90)%360)+'°'],['REICHWEITE',Math.round(dist(r.lon,r.lat,t.lon,t.lat))+' km']])}<div class="button-stack" style="margin-top:10px"><button class="action-btn" data-action="identify" ${t.identified||state.intelOrders.some(x=>x.id===t.id)?'disabled':''}>IDENTIFIZIEREN <span>IFF →</span></button><button class="action-btn ghost" data-action="intercept">ABFANGJÄGER SENDEN <span>8s</span></button></div></div>`:'<div class="tip">Wähle einen Kontakt auf dem Radarschirm oder in der Kontaktliste, um ihn zu identifizieren.</div>';
   return `${stat}${stations}<div><div class="panel-title">KONTAKTE IN AUSGEWÄHLTEM SEKTOR</div><div class="unit-list">${contacts.slice(0,16).map(t=>`<button class="contact-row ${selectedTrack===t.id?'active':''}" data-track="${t.id}"><span>${t.raid?'⚠ ':trackType(t)==='civil'?'✈ ':trackType(t)==='fighter'?'▲ ':'◇ '}${t.id}</span><span class="${!t.identified?'yellow':''}">${t.identified?({'civil':'CIV','hostile':'HOSTILE','unknown':'UNK'}[t.identified]):'???'}</span></button>`).join('')||'<span class="empty">Keine Luftkontakte erfasst.</span>'}</div></div>${trackInfo}<button class="action-btn ghost" data-action="open-radar">RADARSCHIRM ÖFFNEN <span>↗</span></button>`;
 }
 function refreshUI(){
+  updateQuickDocks();updateRadarDock();
   needsUI=false;$('supplies').innerHTML=Math.floor(state.supplies)+' <small>VP</small>';$('territories').innerHTML=owned()+' <small>/ 3</small>';$('intel-count').innerHTML=getIntel().size+' <small>GEB.</small>';$('time').textContent=fmt(state.time);$('date-label').textContent='TAG '+String(Math.floor(state.time/90)+1).padStart(3,'0');
   $('sector-label').textContent=activeView==='radar'?'RADAR SURVEILLANCE':'SOUTH ATLANTIC SECTOR';
   $('system-status').textContent='HQ INTEGRITÄT '+state.baseHp+'%';
@@ -1448,7 +1611,7 @@ function openModal(type){
   modal.classList.remove('hidden');
   if(type==='briefing'||type==='help'){
     title.textContent=type==='briefing'?'MISSION: FIRST EXPANSION':'KOMMANDOHANDBUCH';
-    body.innerHTML=`<p>Du startest mit einer Basis in Uruguay. <b>Deine erste Aufgabe: die verbliebenen Sektoren in Uruguay erobern.</b> Jedes farbig umrandete Land im südamerikanischen Spielgebiet hat mehrere Stadtsektoren. Erst alle Sektoren sichern, dann gehört dir das Land. Danach Paraguay und Argentinien sichern.</p><ol><li><b>Schnellstart:</b> Tippe unten auf der Weltkarte auf <b>ANGREIFEN</b>. Das Spiel wählt eine bereitstehende Armee und zeigt dir den nächsten erreichbaren Angriff.</li><li><b>Selbst kommandieren:</b> TRUPPEN öffnen, eine Einheit antippen, ein Ziel aus der Liste „Erreichbare Ziele“ wählen und den Befehl auslösen.</li><li><b>Bauen:</b> Über BAUEN zuerst den Bauort auswählen und dann die gewünschte Truppe, Basis oder Radarstation kaufen. Panzer sind starke Angreifer, Späher erkunden die Umgebung.</li><li><b>Frontwarnung:</b> Wenn eine gegnerische Offensive angekündigt wird, FRONT ANZEIGEN tippen. Du hast Zeit, Truppen zu verlegen oder die Stellung auszubauen.</li><li><b>Radar retten:</b> Bei einer gelben Warnung die Warnleiste antippen. Radarkontakt identifizieren und <b>ABFANGJÄGER SENDEN</b> auswählen. Nicht abgefangene Angriffe beschädigen das Hauptquartier!</li><li><b>iPhone/iPad:</b> Karte mit einem Finger verschieben und mit zwei Fingern bis 100× zoomen. ZOOM-FOKUS zeigt das gewählte Land groß. Der Symbol-Schlüssel erklärt alle Einheiten. Die Befehlszentrale öffnet sich als große Touch-Leiste.</li></ol><p><b>Legende:</b> gekreuzte Linien = Infanterie, Panzer-Silhouette = Panzerverband, Antennensymbol = Späher, Schiff = Navy, Deltaflügel = Kampfjet, Linienflügel = Zivilflugzeug, Raute = unidentifizierter Kontakt, Radartruck = mobiles Radar, Antenne = Radarstation, Gebäude = Basis.</p><p>Die Karte nutzt reale Geografie; Fraktionen und Konflikte sind fiktiv. Speicherung funktioniert lokal im Browser. Über ⇩ erscheint eine Anleitung zum Hinzufügen auf den iPhone-/iPad-Home-Bildschirm.</p>`;
+    body.innerHTML=`<p>Du startest mit einer Basis in Uruguay. <b>Deine erste Aufgabe: die verbliebenen Sektoren in Uruguay erobern.</b> Jedes farbig umrandete Land im südamerikanischen Spielgebiet hat mehrere Stadtsektoren. Erst alle Sektoren sichern, dann gehört dir das Land. Danach Paraguay und Argentinien sichern.</p><ol><li><b>Schnellstart:</b> Tippe unten auf der Weltkarte auf <b>ANGREIFEN</b>. Du kannst auch eine Einheit direkt auf der Karte antippen und ohne großes Fenster kommandieren.</li><li><b>Selbst kommandieren:</b> TRUPPEN öffnen, eine Einheit antippen, ein Ziel aus der Liste „Erreichbare Ziele“ wählen und den Befehl auslösen.</li><li><b>Bauen:</b> Über BAUEN zuerst den Bauort auswählen und dann die gewünschte Truppe, Basis oder Radarstation kaufen. Panzer sind starke Angreifer, Späher erkunden die Umgebung.</li><li><b>Frontwarnung:</b> Wenn eine gegnerische Offensive angekündigt wird, FRONT ANZEIGEN tippen. Du hast Zeit, Truppen zu verlegen oder die Stellung auszubauen.</li><li><b>Radar retten:</b> Bei einer gelben Warnung die Warnleiste antippen. Radarkontakt identifizieren und <b>ABFANGJÄGER SENDEN</b> auswählen. Nicht abgefangene Angriffe beschädigen das Hauptquartier!</li><li><b>iPhone/iPad:</b> Karte mit einem Finger verschieben und mit zwei Fingern bis 100× zoomen. ZOOM-FOKUS zeigt das gewählte Land groß. Der Symbol-Schlüssel erklärt alle Einheiten. Die kleinen Direktbefehle erscheinen auf der Karte; die ausführliche Zentrale bleibt optional.</li></ol><p><b>Legende:</b> gekreuzte Linien = Infanterie, Panzer-Silhouette = Panzerverband, Antennensymbol = Späher, Schiff = Navy, Deltaflügel = Kampfjet, Linienflügel = Zivilflugzeug, Raute = unidentifizierter Kontakt, Radartruck = mobiles Radar, Antenne = Radarstation, Gebäude = Basis.</p><p>Die Karte nutzt reale Geografie; Fraktionen und Konflikte sind fiktiv. Speicherung funktioniert lokal im Browser. Über ⇩ erscheint eine Anleitung zum Hinzufügen auf den iPhone-/iPad-Home-Bildschirm.</p>`;
     confirm.textContent=type==='briefing'?'EINSATZ STARTEN →':'VERSTANDEN →';cancel.style.display=type==='briefing'?'none':'';
   }else if(type==='install'){
     title.textContent='GREENWATCH ALS APP';body.innerHTML='<p><b>iPhone / iPad:</b> Öffne die GitHub-Pages-Spieladresse in Safari. Tippe auf <b>Teilen</b> und dann auf <b>Zum Home-Bildschirm</b> / <b>Zum Home-Bildschirm hinzufügen</b>. Bestätige mit <b>Hinzufügen</b>.</p><p>Danach startet GREENWATCH mit eigenem App-Icon direkt vom Home-Bildschirm. Nach dem ersten Online-Aufruf können die Spieldateien über den Service Worker auch offline geladen werden, sofern iOS sie nicht aus dem Cache entfernt hat.</p><p><b>Android / Chrome:</b> Im Browser-Menü „App installieren“ oder „Zum Startbildschirm hinzufügen“ wählen.</p><p>Lokale Spielstände werden auf dem jeweiligen Gerät gespeichert; sie werden nicht automatisch zwischen Safari und der installierten Web-App synchronisiert.</p>';confirm.textContent='VERSTANDEN →';cancel.style.display='none';
@@ -1468,11 +1631,15 @@ function closeModal(confirm=false){
 }
 function setup(){
   setupMapInput();updateSymbolGuide();
+  $('unit-dock').addEventListener('click',e=>{const b=e.target.closest('[data-quick]');if(b)beginQuickAction(b.dataset.quick);});
+  $('unit-picker').addEventListener('click',e=>{const b=e.target.closest('[data-pick]');if(b)selectQuickUnit(state.units.find(u=>u.id===b.dataset.pick));});
+  $('area-dock').addEventListener('click',e=>{const b=e.target.closest('[data-area]');if(!b)return;if(b.dataset.area==='close'){showAreaDock=false;updateQuickDocks();return;}if(b.dataset.area==='units'){showAreaDock=false;setMapUnitList(state.units.filter(u=>!u.order).slice(0,12));return;}build(b.dataset.area);updateQuickDocks();});
+  $('radar-dock').addEventListener('click',e=>{const b=e.target.closest('[data-radarquick]');if(!b)return;switch(b.dataset.radarquick){case 'unit':{const unit=state.units.find(u=>u.id===radarFriendSelected);if(unit){selectQuickUnit(unit);openWorld();pointCameraAt(unit.country);}break;}case 'close':radarFriendSelected=null;selectedTrack=null;break;case 'identify':identify();break;case 'intercept':intercept();break;}updateRadarDock();});
   if(window.innerWidth<=1100)camera={lon:-55.5,lat:-30,zoom:8};
   $('sheet-toggle').onclick=()=>setMobileSheet(!commandSheetOpen);
   $('sheet-close').onclick=()=>setMobileSheet(false);
-  $('mobile-world').onclick=()=>{openWorld();setMobileSheet(false);};
-  $('mobile-radar').onclick=()=>{openRadar();tab('intel');setMobileSheet(false);};
+  $('mobile-world').onclick=()=>{openWorld();setMobileSheet(false);updateQuickDocks();};
+  $('mobile-radar').onclick=()=>{openRadar();tab('intel');setMobileSheet(false);updateRadarDock();};
   $('mobile-orders').onclick=()=>{tab('operations');setMobileSheet(true);};
   $('mobile-build').onclick=()=>{tab('build');setMobileSheet(true);};
   $('mobile-intel').onclick=()=>{tab('intel');setMobileSheet(true);};
