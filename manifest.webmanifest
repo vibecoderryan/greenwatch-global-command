@@ -1,0 +1,26 @@
+{
+  "name": "GREENWATCH: GLOBAL COMMAND",
+  "short_name": "GREENWATCH",
+  "description": "Weltweite Militärstrategie mit Radarnetz, Fog of War und Eroberungen",
+  "lang": "de",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080f0b",
+  "theme_color": "#0e1b13",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

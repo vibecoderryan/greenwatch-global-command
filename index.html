@@ -5,9 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#080f0b">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="GREENWATCH">
+  <meta name="application-name" content="GREENWATCH">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="format-detection" content="telephone=no">
-  <meta name="description" content="GREENWATCH: GLOBAL COMMAND v0.3 – weltweites Strategie- und Radarspiel im Browser.">
+  <meta name="description" content="GREENWATCH: GLOBAL COMMAND v0.5 – weltweites Strategie- und Radarspiel im Browser.">
   <title>GREENWATCH — GLOBAL COMMAND</title>
   <style>
 :root{--bg:#080f0b;--panel:#0e1b13;--panel2:#112218;--panel3:#172b1e;--border:#284433;--edge:#365e42;--green:#9be2a6;--bright:#bafabf;--dim:#648972;--muted:#7d9784;--text:#d0e2cf;--yellow:#deb977;--red:#e08579;--blue:#719ba6}
@@ -141,6 +148,90 @@ button{touch-action:manipulation}
 }
 @media(prefers-reduced-motion:reduce){.sidebar,button,.toast{transition:none!important}}
 
+
+/* v0.4: guided touch controls, tactical icons, and meaningful radar warnings */
+.mission-guide{position:absolute;z-index:6;left:14px;bottom:18px;display:flex;align-items:center;gap:14px;max-width:min(620px,calc(100% - 26px));padding:12px 14px;border:1px solid #628562;border-left:4px solid #b5dda0;background:rgba(8,24,14,.94);box-shadow:0 8px 28px #0009;pointer-events:auto}
+.mission-copy{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.guide-eyebrow{font:700 9px 'Courier New',monospace;color:#83ba87;letter-spacing:1px}
+.mission-copy strong{font:700 14px 'Courier New',monospace;color:#e4f4ce;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mission-copy small{font:11px 'Courier New',monospace;color:#a6c4aa;line-height:1.3;white-space:normal}
+.mission-buttons{display:flex;gap:7px;flex-shrink:0}
+.mission-buttons button{min-height:44px;border:1px solid #708f64;padding:9px 12px;cursor:pointer;font:700 11px 'Courier New',monospace;color:#edf9d8;border-radius:3px}
+.mission-buttons button:disabled{opacity:.45;cursor:default}
+.guide-primary{background:#335d37}.guide-secondary{background:#142a1b}
+.global-alert{position:absolute;z-index:18;left:50%;transform:translateX(-50%);top:12px;max-width:calc(100% - 24px);padding:12px 16px;border:2px solid #e3b66b;border-radius:3px;background:#302519;color:#ffe0a3;font:700 11px 'Courier New',monospace;box-shadow:0 8px 30px #000a;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.global-alert span{margin-left:5px}
+.global-alert.hidden,.radar-warning.hidden{display:none!important}
+.radar-warning{position:absolute;z-index:5;bottom:82px;left:50%;transform:translateX(-50%);background:#402c21;border:1px solid #e8be76;padding:10px 14px;color:#ffe1aa;min-height:44px;font:700 11px 'Courier New',monospace;white-space:nowrap}
+.target-list{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.target-choice{min-height:49px;flex:1 1 104px;max-width:220px;background:#1c3323;border:1px solid #4b7656;color:#daeed4;text-align:left;font:700 11px 'Courier New',monospace;padding:8px;border-radius:4px;cursor:pointer}
+.target-choice small{display:block;color:#95b89b;font-size:10px;font-weight:400;margin-top:5px}
+.target-choice.active{border-color:#dcd79e;background:#354b2b;color:#ffebbb}
+.target-choice.friendly{border-color:#427552}
+.target-choice .symbol-mini{font-size:14px;color:#e5d296;margin-right:6px}
+.unit-row.active{border-left:3px solid #dce5a2!important;background:#284932!important}
+.quick-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.quick-grid .unit-row{min-width:0;min-height:55px;padding:6px;gap:6px}
+.quick-grid .unit-symbol{width:28px;height:28px;flex-shrink:0}
+.quick-grid .unit-symbol svg{width:22px;height:22px}
+.quick-grid .unit-info strong{font-size:10px}
+.quick-grid .unit-info small{font-size:9px;white-space:nowrap}
+.quick-grid .unit-hp{display:none}
+.compact-assist{margin:2px 0;padding:7px 9px;font-size:10px}
+.compact-assist strong{font-size:13px}
+
+.unit-symbol{display:flex!important;align-items:center;justify-content:center;flex-shrink:0}
+.unit-symbol svg,.build-symbol svg{display:block;width:28px;height:28px;overflow:visible}
+.build-symbol{flex:0 0 38px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid #46634a;background:#14271c;color:#bde2b4}
+.build-entry{display:flex;align-items:center;gap:9px}
+.build-entry>div:nth-child(2){flex:1;min-width:0}
+.build-row{gap:8px}
+.order-steps{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:10px;font:700 10px 'Courier New',monospace;color:#a9bd9d}
+.order-steps b{background:#193521;padding:5px 7px;border:1px solid #4a7553;color:#d5eac9}
+.order-steps b.done{color:#f0e0a5;border-color:#a7a56a}
+.order-steps span{color:#5d8d66}
+.section-assist{margin:10px 0;padding:11px;background:#152a1a;border-left:3px solid #88bd87;color:#d8ecd4;font:11px/1.5 'Courier New',monospace}
+.section-assist strong{color:#e7e6ab}
+.event-badge{display:inline-flex;align-items:center;gap:6px;background:#38291f;color:#f7cf99;border:1px solid #af8053;padding:5px 7px;margin:8px 0;font-size:10px}
+.target-hint{color:#f0dea2;font-size:11px;margin:8px 0}
+.action-btn.go{border-color:#d0c98e;background:#49613c;color:#fff9ce}
+.action-btn:disabled{opacity:.45}
+@media(min-width:700px){.mission-guide{left:16px;bottom:14px}.map-bottom-readout{display:none!important}}
+@media(min-width:700px) and (max-width:1100px){.mission-guide{padding:9px 10px;gap:7px;flex-wrap:wrap}.mission-buttons button{padding:7px 8px}.zoom-controls{bottom:104px!important}}
+@media(max-width:699px){
+  .mission-guide{left:7px;right:7px;bottom:137px;max-width:none;padding:9px 10px;gap:8px;min-height:74px;border-left-width:3px;border-radius:5px}
+  .guide-eyebrow{font-size:8px;letter-spacing:.3px}.mission-copy strong{font-size:12px}.mission-copy small{font-size:10px;line-height:1.15;max-height:26px;overflow:hidden}
+  .mission-buttons{flex-direction:column;gap:5px}.mission-buttons button{font-size:10px;min-height:32px;padding:5px 9px;min-width:105px}
+  .map-bottom-readout{display:none!important}
+  .global-alert{top:5px;font-size:9px;padding:10px;max-width:calc(100% - 10px)}
+  .sidebar.sheet-open~*{z-index:0}
+  .workspace:has(.sidebar.sheet-open) .mission-guide{display:none}
+  .radar-warning{bottom:72px;max-width:calc(100% - 15px);white-space:normal;font-size:10px}
+  .target-choice{min-height:54px;flex-basis:110px}
+  .target-list{gap:6px}
+  .unit-symbol svg{width:30px;height:30px}
+}
+@media(max-width:699px) and (max-height:610px){.mission-guide{bottom:132px;min-height:57px;padding:5px 8px}.mission-copy small{display:none}}
+
+
+/* v0.5 — tactile strategy controls, incoming ground offensives and app icon. */
+.brand-badge{overflow:hidden;border-radius:8px;box-shadow:0 0 13px #21462e}
+.invasion-note{border:1px solid #995b4d;border-left:4px solid #e6a278;background:#311d19;color:#ffd6b5;padding:11px;display:flex;flex-direction:column;gap:8px}
+.invasion-note strong{font-size:12px;letter-spacing:.3px}
+.invasion-note small{font-size:10px;color:#e3c8b6;line-height:1.5}
+.invasion-note button{background:#664032;color:#ffecd7;border:1px solid #ae7760;min-height:45px;font:bold 11px 'Courier New',monospace;padding:9px;cursor:pointer}
+.battle-preview{background:#1d3021;border:1px solid #536e4e;padding:11px;font-size:11px;line-height:1.55;color:#d1e5c6}
+.battle-preview b{color:#fae0a7}
+.front-flash{animation:frontflash 1.4s infinite alternate}@keyframes frontflash{from{opacity:.75}to{opacity:1}}
+.order-timer{height:4px;background:#173b23;margin-top:5px;border-radius:4px;overflow:hidden}.order-timer i{display:block;background:#94d6a0;height:4px}
+#install-btn{color:#d1ecb7}
+@media(max-width:699px){
+ .invasion-note{padding:10px}.invasion-note button{min-height:48px}
+ #install-btn{font-size:18px;padding:3px 7px}
+ .top-actions{gap:3px}.top-actions .tiny{font-size:8px;padding:7px 5px}
+ .mission-copy strong{font-size:11px}
+}
+
 </style>
   
   
@@ -148,36 +239,39 @@ button{touch-action:manipulation}
 <body>
   <div id="app" class="app">
     <header class="topbar">
-      <div class="brand"><div class="brand-badge">GW<span>◆</span></div><div><div class="brand-title">GREENWATCH <b>/ GLOBAL COMMAND</b></div><div class="brand-sub">UNIFIED COMMAND NETWORK <span class="dot">●</span> SYSTEM ONLINE</div></div></div>
+      <div class="brand"><div class="brand-badge"><img src="./icon-192.png" alt="" width="39" height="39" style="display:block;width:100%;height:100%;object-fit:cover"><span>◆</span></div><div><div class="brand-title">GREENWATCH <b>/ GLOBAL COMMAND</b></div><div class="brand-sub">UNIFIED COMMAND NETWORK <span class="dot">●</span> SYSTEM ONLINE</div></div></div>
       <div class="top-metrics">
         <div class="metric"><span>VERSORGUNG</span><strong id="supplies">250 <small>VP</small></strong></div>
         <div class="metric"><span>TERRITORIEN</span><strong id="territories">0 <small>/ 3</small></strong></div>
         <div class="metric"><span>AUFKLÄRUNG</span><strong id="intel-count">0 <small>GEB.</small></strong></div>
         <div class="metric"><span>SPIELZEIT</span><strong id="time">00:00</strong></div>
       </div>
-      <div class="top-actions"><button id="help-btn" class="icon-button" title="Spielanleitung" aria-label="Spielanleitung">?</button><button id="save-btn" class="secondary tiny">SPEICHERN</button><button id="reset-btn" class="icon-button" title="Neues Spiel" aria-label="Neues Spiel">↻</button></div>
+      <div class="top-actions"><button id="install-btn" class="icon-button" title="Zum Home-Bildschirm hinzufügen" aria-label="App installieren">⇩</button><button id="help-btn" class="icon-button" title="Spielanleitung" aria-label="Spielanleitung">?</button><button id="save-btn" class="secondary tiny">SPEICHERN</button><button id="reset-btn" class="icon-button" title="Neues Spiel" aria-label="Neues Spiel">↻</button></div>
     </header>
 
     <div class="control-strip"><div class="indicator"><span class="pulsedot"></span> TACTICAL OPERATIONS CENTER <span class="sep">/</span> <span id="sector-label">SOUTH ATLANTIC SECTOR</span></div><div class="sim-controls"><span class="micro-label">SIMULATION</span><button id="pause-btn" class="control active" aria-label="Pause oder fortsetzen">❚❚</button><button class="control speed active" data-speed="1">1×</button><button class="control speed" data-speed="3">3×</button><button class="control speed" data-speed="10">10×</button><div class="line"></div><span id="date-label">TAG 001</span></div></div>
 
     <div class="workspace">
+      <button id="global-alert" class="global-alert hidden" aria-live="polite">RADAR: ANFLUG ERKANNT — ANTIPPEN ZUM VERFOLGEN <span>→</span></button>
       <nav class="rail" aria-label="Spielansichten">
         <button id="nav-world" class="rail-btn active" data-view="world" title="Weltkarte"><span class="rail-icon">◎</span><span>WELT</span></button>
         <button id="nav-radar" class="rail-btn" data-view="radar" title="Radar"><span class="rail-icon">◉</span><span>RADAR</span></button>
         <div class="rail-gap"></div><button id="nav-how" class="rail-btn" title="Hilfe"><span class="rail-icon">ⓘ</span><span>HILFE</span></button>
-        <div class="rail-footer">GW<br>0.3</div>
+        <div class="rail-footer">GW<br>0.5</div>
       </nav>
 
       <main class="stage">
         <div class="stage-heading"><div><div class="eyebrow" id="view-eyebrow">01 / STRATEGIC THEATER</div><h1 id="view-title">WELTKARTE <span>/ GLOBAL SITUATION</span></h1></div><div id="mode-label" class="mode-tag">FOG OF WAR ACTIVE</div></div>
         <section id="world-view" class="viewport">
+          <div id="mission-guide" class="mission-guide" aria-live="polite"><div class="mission-copy"><span class="guide-eyebrow">MISSION CONTROL / NÄCHSTER SCHRITT</span><strong id="mission-title">Basis sichern</strong><small id="mission-detail">Wähle eine Einheit und ein Ziel.</small></div><div class="mission-buttons"><button id="mission-focus" class="guide-secondary">ZIEL ZEIGEN</button><button id="mission-act" class="guide-primary">ANGREIFEN →</button></div></div>
           <canvas id="world-canvas" aria-label="Interaktive Weltkarte: Länder anklicken zum Auswählen"></canvas>
-          <div class="map-hud upper-left"><div class="hud-label">TACTICAL OVERLAY</div><div id="map-coordinates" class="hud-data">56.2°W / 34.9°S</div><div class="hud-small">KLICK: LAND WÄHLEN · ZIEHEN: KARTE</div></div>
+          <div class="map-hud upper-left"><div class="hud-label">TACTICAL OVERLAY</div><div id="map-coordinates" class="hud-data">56.2°W / 34.9°S</div><div class="hud-small">TIPPEN: AUSWÄHLEN · ZIEHEN: KARTE</div></div>
           <div class="map-hud upper-right"><span class="legend"><i style="background:#77b88c"></i> EIGEN</span><span class="legend"><i style="background:#b55e58"></i> GEGENPARTEI</span><span class="legend"><i style="background:#9c8b60"></i> NEUTRAL</span><span class="legend"><i style="background:#1a2b20"></i> UNAUFGEKLÄRT</span></div>
-          <div class="map-hud bottom-left"><span id="map-bottom-status">NEUTRALE WELT // BASIS OPERATIV</span></div>
+          <div class="map-hud bottom-left map-bottom-readout"><span id="map-bottom-status">NEUTRALE WELT // BASIS OPERATIV</span></div>
           <div class="zoom-controls"><button id="zoom-in" aria-label="Hineinzoomen">+</button><button id="zoom-out" aria-label="Herauszoomen">−</button><button id="toggle-supply" title="Versorgungsnetz anzeigen (S)" aria-label="Versorgungslinien umschalten">S</button><button id="toggle-radar" title="Radarreichweiten anzeigen (R)" aria-label="Radarringe umschalten">R</button><button id="zoom-home" title="Zur Startbasis" aria-label="Zur Basis">⌖</button><button id="zoom-world" title="Gesamte Welt" aria-label="Gesamte Welt">◫</button></div>
         </section>
         <section id="radar-view" class="viewport hidden">
+          <button id="radar-warning" class="radar-warning hidden" aria-label="Luftbedrohung anzeigen">WARNUNG: KONTAKT IM ANFLUG · DETAILS →</button>
           <canvas id="radar-canvas" aria-label="Radar mit Luftkontakten"></canvas>
           <div class="map-hud upper-left"><div class="hud-label">PRIMARY RADAR SCOPE</div><div id="radar-station-label" class="hud-data">RDR-01 // HQ URUGUAY</div><div class="hud-small">TRACK SELECT / CLICK TARGET</div></div>
           <div class="map-hud upper-right radar-stats"><span id="radar-range">RNG 650 KM</span><span id="radar-contact-count">TRACKS 00</span><span id="radar-bearing">SWEEP 000°</span></div>
@@ -187,11 +281,11 @@ button{touch-action:manipulation}
         <section class="feed"><div class="feed-title"><span class="pulsedot"></span> OPERATIONS LOG <span class="feed-count" id="event-count">LIVE</span></div><div id="log" class="log" role="log" aria-live="polite"></div></section>
       </main>
 
-      <aside class="sidebar" id="command-sheet"><div id="mobile-sheet-grip"><button id="sheet-toggle" aria-expanded="false" aria-controls="command-sheet">⌃ BEFEHLSZENTRALE · <span id="mobile-selected">URUGUAY</span></button><button id="sheet-close" aria-label="Befehlszentrale schließen">⌄</button></div><div class="sidebar-header"><div class="eyebrow">02 / COMMAND TERMINAL</div><h2>BEFEHLSZENTRALE</h2><div class="tab-row"><button class="tab active" data-tab="operations">OPERATIONEN</button><button class="tab" data-tab="build">BAUEN</button><button class="tab" data-tab="intel">INTEL</button></div></div><div class="sidebar-scroll"><div id="panel-operations" class="panel"></div><div id="panel-build" class="panel hidden"></div><div id="panel-intel" class="panel hidden"></div></div><div class="sidebar-bottom"><span class="pulsedot"></span> <span id="system-status">KOMMANDONETZ ONLINE</span><span>VER 0.3</span></div></aside>
+      <aside class="sidebar" id="command-sheet"><div id="mobile-sheet-grip"><button id="sheet-toggle" aria-expanded="false" aria-controls="command-sheet">⌃ BEFEHLSZENTRALE · <span id="mobile-selected">URUGUAY</span></button><button id="sheet-close" aria-label="Befehlszentrale schließen">⌄</button></div><div class="sidebar-header"><div class="eyebrow">02 / COMMAND TERMINAL</div><h2>BEFEHLSZENTRALE</h2><div class="tab-row"><button class="tab active" data-tab="operations">OPERATIONEN</button><button class="tab" data-tab="build">BAUEN</button><button class="tab" data-tab="intel">INTEL</button></div></div><div class="sidebar-scroll"><div id="panel-operations" class="panel"></div><div id="panel-build" class="panel hidden"></div><div id="panel-intel" class="panel hidden"></div></div><div class="sidebar-bottom"><span class="pulsedot"></span> <span id="system-status">KOMMANDONETZ ONLINE</span><span>VER 0.5</span></div></aside>
       <nav id="mobile-nav" aria-label="Mobile Spielsteuerung">
         <button id="mobile-world" class="active" aria-label="Weltkarte"><span>◎</span>WELTKARTE</button>
         <button id="mobile-radar" aria-label="Radarschirm"><span>◉</span>RADAR</button>
-        <button id="mobile-orders" aria-label="Befehlszentrale öffnen"><span>▣</span>BEFEHLE</button>
+        <button id="mobile-orders" aria-label="Befehlszentrale öffnen"><span>☷</span>TRUPPEN</button>
         <button id="mobile-build" aria-label="Baumenü öffnen"><span>✚</span>BAUEN</button>
       </nav>
     </div>
@@ -207,7 +301,7 @@ window.GREENWATCH_WORLD = [{"id":"FJI","name":"Fiji","continent":"Oceania","pop"
 
 </script>
 <script>
-/* GREENWATCH: GLOBAL COMMAND v0.3 — self-contained single-player prototype.
+/* GREENWATCH: GLOBAL COMMAND v0.4 — self-contained single-player prototype.
    World geometry is shipped offline. No external APIs, frameworks or server required. */
 (()=>{
 'use strict';
@@ -217,12 +311,32 @@ if(!Array.isArray(WORLD)){document.body.innerHTML='<p style="color:#bff;padding:
 const COUNTRIES=Object.fromEntries(WORLD.map(c=>[c.id,c]));
 const SIDES={player:{name:'GREENWATCH',color:'#81d899'},red:{name:'ROTE DIREKTIVE',color:'#c26d66'},amber:{name:'BERNSTEIN-BÜNDNIS',color:'#d4b573'},neutral:{name:'NEUTRAL',color:'#8c9074'}};
 const GEONAMES={URY:'Uruguay',ARG:'Argentinien',BRA:'Brasilien',PRY:'Paraguay',CHL:'Chile',PER:'Peru',BOL:'Bolivien',COL:'Kolumbien',ECU:'Ecuador',VEN:'Venezuela',ZAF:'Südafrika',NAM:'Namibia',DEU:'Deutschland',FRA:'Frankreich',USA:'USA',RUS:'Russland',CHN:'China',AUS:'Australien'};
-const SAVEKEY='greenwatch-global-command-v03';
-const OLD_SAVEKEY='greenwatch-global-command-v02';
+const SAVEKEY='greenwatch-global-command-v05';
+const PREV_SAVEKEY='greenwatch-global-command-v04';
+const OLD_SAVEKEY='greenwatch-global-command-v03';
+const OLDER_SAVEKEY='greenwatch-global-command-v02';
 const OLDEST_SAVEKEY='greenwatch-global-command-v01';
-const COST={army:90,air:110,navy:100,mobile:75,radar:130,base:200,fort:80,repair:65,reinforce:40};
+const COST={army:90,armor:160,recon:75,air:110,navy:100,mobile:75,radar:130,base:200,fort:80,repair:65,reinforce:40};
 const BASELOC=[-56.164,-34.901];
-const UNITMETA={army:{name:'ARMY',symbol:'▣',power:8,full:'Infanterieverband'},navy:{name:'NAVY',symbol:'◆',power:5,full:'Patrouillenschiff'},air:{name:'AIR FORCE',symbol:'△',power:5,full:'Kampfflugzeug'},mobile:{name:'RADAR',symbol:'◈',power:0,full:'Mobiles Radarsystem'}};
+const UNITMETA={army:{name:'ARMY',power:8,full:'Infanterieverband'},armor:{name:'PANZER',power:14,full:'Panzerverband'},recon:{name:'SPÄHER',power:3,full:'Aufklärungstrupp'},navy:{name:'NAVY',power:5,full:'Patrouillenschiff'},air:{name:'AIR FORCE',power:5,full:'Kampfflugzeug'},mobile:{name:'RADAR',power:0,full:'Mobiles Radarsystem'}};
+const isGroundCombat=u=>u&&['army','armor'].includes(u.type);
+const isGroundUnit=u=>u&&['army','armor','recon','mobile'].includes(u.type);
+const maxPower=u=>u.type==='armor'?14:u.type==='recon'?3:10;
+const SVGGLYPH={
+ armor:'<path d="M2 18h26l-3 5H6zM8 13h15l3 5H5zM12 13V8h10v5M20 9h8"/><circle cx="9" cy="22" r="2"/><circle cx="16" cy="22" r="2"/><circle cx="23" cy="22" r="2"/>',
+ recon:'<path d="M4 23h22M9 22V14l6-6 6 6v8M2 7l6 0M23 7h5M14 3v7M14 17l8-4M14 17L7 13"/><circle cx="15" cy="5" r="2"/>',
+ army:'<rect x="3" y="9" width="22" height="10" rx="2"/><path d="M8 9V6h11l4 3M7 19v3h16v-3M15 13h7m-4-3V6"/><circle cx="10" cy="14" r="2"/>',
+ navy:'<path d="M3 15h23l-4 8H8zM8 14V9h11v5M13 9V5h5l2 4M4 25q4 3 8 0t8 0t8 0"/>',
+ air:'<path d="M14 2l4 13 10 7-1 3-13-5L2 25l-1-3 10-7zM11 23l-3 5m12-5 3 5"/>',
+ mobile:'<rect x="2" y="16" width="17" height="7" rx="1"/><path d="M19 18h6l3 5H19M10 16l2-5M7 11q5-10 10 0M4 8q8-14 16 0"/><circle cx="8" cy="25" r="2"/><circle cx="23" cy="25" r="2"/>',
+ radar:'<path d="M7 25h16M12 25l2-9 2 9M14 16L8 9M14 16l8-6"/><path d="M7 8q8-8 16 0M3 5q12-12 25 0"/>',
+ base:'<path d="M5 24V9l9-6 9 6v15H5zM11 24v-8h6v8M5 13h18M9 9h2m6 0h2"/>',
+ fort:'<path d="M5 26V5h5v5h4V5h5v5h4V5h4v21H5zM12 26v-8h8v8"/>',
+ repair:'<path d="M6 23l12-12m-5-6a8 8 0 0 0 10 10L13 25a6 6 0 0 1-8-8L15 7a8 8 0 0 0-2-2z"/>',
+ reinforce:'<path d="M14 3v23M2 14h24M5 5l18 18M23 5L5 23"/>'
+};
+function iconSVG(type){return '<svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(SVGGLYPH[type]||SVGGLYPH.army)+'</svg>';}
+
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const rad=x=>x*Math.PI/180;
 const rnd=(a,b)=>a+Math.random()*(b-a);
@@ -253,18 +367,18 @@ function newState(){
     {id:'F-01',type:'air',country:'URY',power:5,order:null}
   ];
   const radars=[{id:'RDR-01',type:'base',country:'URY',lon:BASELOC[0],lat:BASELOC[1],range:750,label:'HQ URUGUAY'}];
-  const s={version:3,recon:{},time:0,speed:1,paused:false,supplies:250,score:0,baseHp:100,countries,units,radars,bases:['URY'],known:{URY:true,ARG:true,BRA:true},tracks:[],log:[],nextUnit:3,nextRadar:2,nextTrack:1,nextGroup:1,aiTimer:22,won:false,over:false,intelOrders:[],milestones:[]};
+  const s={version:5,enemyOrders:[],nextDispatch:32,recon:{},nextRaid:42,alertTrack:null,activity:[],time:0,speed:1,paused:false,supplies:250,score:0,baseHp:100,countries,units,radars,bases:['URY'],known:{URY:true,ARG:true,BRA:true},tracks:[],log:[],nextUnit:3,nextRadar:2,nextTrack:1,nextGroup:1,aiTimer:22,won:false,over:false,intelOrders:[],milestones:[]};
   for(let i=0;i<12;i++)spawnTrack(s);
   return s;
 }
 function initial(){
   try{
-    let json=localStorage.getItem(SAVEKEY)||localStorage.getItem(OLD_SAVEKEY)||localStorage.getItem(OLDEST_SAVEKEY);
+    let json=localStorage.getItem(SAVEKEY)||localStorage.getItem(PREV_SAVEKEY)||localStorage.getItem(OLD_SAVEKEY)||localStorage.getItem(OLDER_SAVEKEY)||localStorage.getItem(OLDEST_SAVEKEY);
     if(json){const loaded=JSON.parse(json);
-      if([1,2,3].includes(loaded.version)&&loaded.countries&&loaded.units&&loaded.radars&&loaded.tracks){
-        state=loaded;state.version=3;state.paused=false;state.intelOrders||=[];state.milestones||=[];state.nextGroup||=1;state.recon||={};
+      if([1,2,3,4,5].includes(loaded.version)&&loaded.countries&&loaded.units&&loaded.radars&&loaded.tracks){
+        state=loaded;state.version=5;state.enemyOrders??=[];state.nextDispatch??=state.time+30;state.paused=false;state.nextRaid??=state.time+45;state.alertTrack??=null;state.activity??=[];state.intelOrders||=[];state.milestones||=[];state.nextGroup||=1;state.recon||={};
         for(const c of Object.values(state.countries))c.fort??=0;
-        toast('Spielstand geladen (v0.1/v0.2 übernommen).');return;
+        toast('Spielstand aus früherer Version übernommen.');return;
       }
     }
   }catch(e){console.warn('Cannot load save',e);}
@@ -309,7 +423,7 @@ function getIntel(){
   const live=new Set(state.bases), addNeighbor=id=>{if(!COUNTRIES[id])return;live.add(id);COUNTRIES[id].neighbors.forEach(n=>live.add(n));};
   for(const id of state.bases)addNeighbor(id);
   for(const c of WORLD)if(owner(c.id)==='player')live.add(c.id);
-  for(const u of state.units)if(u.type==='army'||u.type==='mobile')addNeighbor(u.country);
+  for(const u of state.units)if(['army','armor','mobile','recon'].includes(u.type)){addNeighbor(u.country);if(u.type==='recon')for(const n of COUNTRIES[u.country]?.neighbors||[])addNeighbor(n);}
   for(const u of state.units)if(u.type==='air'){live.add(u.country);for(let n of COUNTRIES[u.country]?.neighbors||[])live.add(n);}
   for(const [id,expires] of Object.entries(state.recon||{}))if(expires>state.time){live.add(id);for(const n of COUNTRIES[id]?.neighbors||[])live.add(n);}
   for(const id of live)state.known[id]=true;
@@ -324,37 +438,77 @@ function spawnTrack(s){
   const pos=genContactPosition(s),i=s.nextTrack++,roll=Math.random(),kind=roll<.57?'civil':roll<.85?'unknown':'hostile';
   s.tracks.push({id:'T-'+String(i).padStart(3,'0'),lon:pos[0],lat:pos[1],heading:rnd(0,Math.PI*2),speed:rnd(170,520),altitude:Math.floor(rnd(120,370))*100,kind,identified:null,trail:[],life:rnd(120,250),raidCooldown:0});
 }
-function updateTracks(dt){
-  for(const t of state.tracks){
-    const km=t.speed*dt/3600;
-    t.lon+=Math.cos(t.heading)*km/(111*Math.max(.3,Math.cos(rad(t.lat))));
-    t.lat+=Math.sin(t.heading)*km/111;
-    t.life-=dt;t.raidCooldown=Math.max(0,t.raidCooldown-dt);
-    if(Math.random()<.005) t.heading+=rnd(-.3,.3);
-    if(t.trail.length>9)t.trail.shift();t.trail.push([t.lon,t.lat]);
-    if(t.kind==='hostile'&&t.identified==='hostile'&&dist(t.lon,t.lat,...BASELOC)<105&&t.raidCooldown===0){state.baseHp=Math.max(0,state.baseHp-11);t.raidCooldown=45;log('ALARM: Hauptquartier unter Luftbedrohung! -11 Integrität','bad');toast('WARNUNG: Luftraumbedrohung nahe der Basis!',true);}
-  }
-  state.tracks=state.tracks.filter(t=>t.life>0 && Math.abs(t.lon)<185 && Math.abs(t.lat)<85);
-  if(state.tracks.length<12)spawnTrack(state);
+function spawnRaid(){
+  if(state.over)return;
+  const target=state.bases.includes('URY')?'URY':state.bases[0],p=target==='URY'?BASELOC:center(target);
+  const a=rnd(0,Math.PI*2),distance=rnd(820,1030);
+  const lon=p[0]+Math.cos(a)*distance/(111.2*Math.max(.35,Math.cos(rad(p[1]))));
+  const lat=p[1]+Math.sin(a)*distance/111.2;
+  const heading=Math.atan2((p[1]-lat)*111.2,(p[0]-lon)*111.2*Math.cos(rad(lat)));
+  const id='T-'+String(state.nextTrack++).padStart(3,'0');
+  state.tracks.push({id,lon,lat,heading,speed:rnd(520,680),altitude:Math.floor(rnd(120,330))*100,kind:'hostile',identified:null,trail:[],life:250,raid:true,targetBase:target,alerted:false});
+  log('RADARNETZ: Verstärkte Luftaktivität in der Region. Sensoren prüfen.','warn');
+  state.activity.push({id:target,end:state.time+18});needsUI=true;
 }
+function detectedThreat(){
+  return state.tracks.filter(t=>t.raid&&canSeeTrack(t)).sort((a,b)=>dist(a.lon,a.lat,...BASELOC)-dist(b.lon,b.lat,...BASELOC))[0]||null;
+}
+function radarAlert(t){
+  if(t.alerted)return;
+  t.alerted=true;state.alertTrack=t.id;
+  state.speed=1;
+  log(`RADARWARNUNG: ${t.id} im Anflug, ${Math.round(dist(t.lon,t.lat,...BASELOC))} km bis zur Basis!`,'bad');
+  toast(`RADARWARNUNG: ${t.id} — antippen und abfangen!`,true);needsUI=true;
+}
+function updateTracks(dt){
+  const eliminated=[];
+  for(const t of state.tracks){
+    if(t.raid){
+      const loc=t.targetBase==='URY'?BASELOC:center(t.targetBase);
+      t.heading=Math.atan2((loc[1]-t.lat)*111.2,(loc[0]-t.lon)*111.2*Math.cos(rad(t.lat)));
+    }
+    // Game time is compressed relative to realistic flight time so contacts visibly move.
+    const km=t.speed*dt*(t.raid?28:11)/3600;
+    t.lon+=Math.cos(t.heading)*km/(111.2*Math.max(.3,Math.cos(rad(t.lat))));
+    t.lat+=Math.sin(t.heading)*km/111.2;
+    t.life-=dt;
+    if(!t.raid&&Math.random()<.003) t.heading+=rnd(-.3,.3);
+    t.trail??=[];t.trailTimer=(t.trailTimer||0)+dt;
+    if(t.trailTimer>.75){t.trailTimer=0;if(t.trail.length>12)t.trail.shift();t.trail.push([t.lon,t.lat]);}
+    if(t.raid){
+      if(canSeeTrack(t))radarAlert(t);
+      if(dist(t.lon,t.lat,...(t.targetBase==='URY'?BASELOC:center(t.targetBase)))<65){
+        const damage=22;state.baseHp=Math.max(0,state.baseHp-damage);
+        log(`LUFTANGRIFF: ${t.id} erreichte die Basis! HQ -${damage}%`,'bad');
+        toast(`LUFTANGRIFF! HQ -${damage}% — mehr Radar-/Abfangschutz nötig.`,true);
+        state.activity.push({id:t.targetBase,end:state.time+20});eliminated.push(t.id);needsUI=true;
+      }
+    }
+  }
+  state.tracks=state.tracks.filter(t=>t.life>0 && Math.abs(t.lon)<185 && Math.abs(t.lat)<85 && !eliminated.includes(t.id));
+  if(state.tracks.length<12)spawnTrack(state);
+  if(state.nextRaid<=state.time){spawnRaid();state.nextRaid=state.time+135+rnd(0,28);}
+  state.activity=state.activity.filter(x=>x.end>state.time);
+}
+
 function getAirSupport(id){return state.units.some(u=>u.type==='air'&&u.country===id&&!u.order)?3:0;}
 function getNavalSupport(id){return COUNTRIES[id]?.coastal&&state.units.some(u=>u.type==='navy'&&u.country===id&&!u.order)?2:0;}
 function issueOrder(){
   const u=state.units.find(x=>x.id===selectedUnit),id=selectedCountry;
   if(!u||!COUNTRIES[id])return toast('Erst Einheit und Zielgebiet auswählen.',true);
   if(u.order)return toast('Diese Einheit führt bereits einen Auftrag aus.',true);
-  if(u.type==='army'||u.type==='mobile'){
+  if(isGroundUnit(u)){
     if(u.country!==id && !COUNTRIES[u.country]?.neighbors.includes(id))return toast('Nur benachbarte Länder erreichbar. Zuerst eine Verbindung sichern.',true);
     if(u.type==='mobile' && owner(id)!=='player' && !state.bases.includes(id))return toast('Mobiles Radar kann nur in gesicherte Gebiete verlegt werden.',true);
-    if(u.type==='army' && u.country===id && owner(id)==='player')return toast('Einheit befindet sich bereits im Zielgebiet.',true);
+    if(isGroundCombat(u) && u.country===id && owner(id)==='player')return toast('Einheit befindet sich bereits im Zielgebiet.',true);
   }else if(u.type==='navy'){
     if(!COUNTRIES[id].coastal)return toast('Die Navy benötigt ein Küstengebiet.',true);
   }else if(u.type==='air'){
     let [a,b]=positionUnit(u),[x,y]=center(id);if(dist(a,b,x,y)>2100)return toast('Ziel außerhalb der Einsatzreichweite (2.100 km).',true);
   }
-  const d= u.type==='army'?11:u.type==='mobile'?10:u.type==='navy'?15:8;
+  const d= u.type==='armor'?8:u.type==='recon'?6:u.type==='army'?11:u.type==='mobile'?10:u.type==='navy'?15:8;
   u.order={target:id,from:u.country,remaining:d,total:d};
-  log(`${u.id} → ${name(id)}: ${u.type==='army'&&owner(id)!=='player'?'ANGRIFF':'VERLEGUNG'} angeordnet.`,'good');toast(`${u.id}: Auftrag bestätigt.`);needsUI=true;
+  log(`${u.id} → ${name(id)}: ${isGroundCombat(u)&&owner(id)!=='player'?'ANGRIFF':'VERLEGUNG'} angeordnet.`,'good');toast(`${u.id}: Auftrag bestätigt.`);needsUI=true;
 }
 function issueRecon(){
   const u=state.units.find(x=>x.id===selectedUnit),id=selectedCountry;
@@ -371,7 +525,7 @@ function resolveAttack(armies,id){
   if(strike>=resistance){
     const old=territory.owner;territory.owner='player';territory.defense=3;territory.fort=0;
     for(const u of armies){u.country=id;u.power=Math.max(3,u.power-1);u.order=null;}
-    state.supplies+=20;state.score+=150;
+    state.supplies+=20;state.score+=150;state.activity.push({id,end:state.time+18});
     log(`${name(id)} erobert! ${armies.map(u=>u.id).join(' + ')} · +20 VP.`,'good');toast(`${name(id)} wurde eingenommen! +20 VP`);
     if(old!=='neutral')log(`${SIDES[old].name} aus ${name(id)} verdrängt.`,'good');
     checkMilestones();
@@ -388,15 +542,16 @@ function finishOrder(u){
   const o=u.order;if(!o)return;
   const id=o.target;
   if(o.recon){state.recon||={};state.recon[id]=state.time+120;state.known[id]=true;u.order=null;state.score+=40;log(`${u.id}: Aufklärung in ${name(id)} abgeschlossen (120s sichtbar).`,'good');toast('Luftaufklärung erfolgreich: '+name(id));}
-  else if(u.type==='army'&&owner(id)!=='player')resolveAttack([u],id);
+  else if(isGroundCombat(u)&&owner(id)!=='player')resolveAttack([u],id);
+  else if(u.type==='recon'){u.order=null;u.country=id;state.recon[id]=state.time+110;state.known[id]=true;log(`${u.id}: Späher melden Aufklärung aus ${name(id)}.`,'good');toast('Späher erreichen '+name(id)+' · Sektor aufgeklärt');}
   else{u.order=null;u.country=id;log(`${u.id}: Position ${name(id)} erreicht.`,'good');if(u.type==='air')state.score+=10;}
   needsUI=true;
 }
 function issueGroupAttack(){
   const lead=state.units.find(x=>x.id===selectedUnit),id=selectedCountry;
-  if(!lead||lead.type!=='army'||lead.order||owner(id)==='player')return toast('Wähle eine verfügbare Armee und ein gegnerisches Zielland.',true);
+  if(!lead||!isGroundCombat(lead)||lead.order||owner(id)==='player')return toast('Wähle eine verfügbare Armee und ein gegnerisches Zielland.',true);
   if(lead.country!==id&&!COUNTRIES[lead.country]?.neighbors.includes(id))return toast('Koordinierter Angriff nur auf ein Nachbarland.',true);
-  const group=state.units.filter(u=>u.type==='army'&&u.country===lead.country&&!u.order).slice(0,4);
+  const group=state.units.filter(u=>isGroundCombat(u)&&u.country===lead.country&&!u.order).slice(0,4);
   if(group.length<2)return toast('Mindestens zwei freie Armeen im gleichen Land benötigt.',true);
   const key='G-'+state.nextGroup++;
   for(const u of group)u.order={target:id,from:u.country,remaining:13,total:13,group:key};
@@ -417,20 +572,59 @@ function advanceOrders(dt){
     else for(const u of units){u.country=id;u.order=null;}
   }
 }
+function advanceEnemyOrders(dt){
+  for(const attack of [...state.enemyOrders]){
+    attack.remaining-=dt;
+    if(attack.remaining>0)continue;
+    state.enemyOrders=state.enemyOrders.filter(x=>x!==attack);
+    if(owner(attack.id)!=='player')continue;
+    const territory=state.countries[attack.id];
+    const defenders=state.units.filter(u=>isGroundCombat(u)&&!u.order&&u.country===attack.id);
+    const defense=territory.defense+(territory.fort||0)*3+defenders.reduce((sum,u)=>sum+Math.round(u.power*.7),0);
+    if(attack.power>=defense){
+      territory.owner=attack.faction;territory.defense=6;territory.fort=0;
+      for(const u of defenders){u.power=Math.max(1,u.power-3);u.country=state.bases[0]||'URY';}
+      if(state.bases.includes(attack.id)){state.baseHp=Math.max(0,state.baseHp-22);log('FEINDLICHER DURCHBRUCH: Militärbasis beschädigt! -22% HQ','bad');}
+      log(`${name(attack.id)} verloren! ${SIDES[attack.faction].name} hat die Verteidigung durchbrochen.`,'bad');
+      toast('Territorium verloren: '+name(attack.id),true);
+    }else{
+      territory.defense=Math.max(2,territory.defense-2);
+      for(const u of defenders)u.power=Math.max(2,u.power-1);
+      state.score+=75;
+      log(`VERTEIDIGUNG ERFOLGREICH: ${name(attack.id)} hält stand. +75 Punkte.`,'good');
+      toast('Front gehalten: '+name(attack.id));
+    }
+    state.activity.push({id:attack.id,end:state.time+18});needsUI=true;
+  }
+}
+function currentFrontThreat(){return (state.enemyOrders||[]).slice().sort((a,b)=>a.remaining-b.remaining)[0]||null;}
+function openFrontThreat(){const t=currentFrontThreat();if(!t)return;selectedCountry=t.id;selectedUnit=state.units.find(u=>isGroundCombat(u)&&!u.order)?.id||selectedUnit;pointCameraAt(t.id);openWorld();tab('operations');if(isMobile())setMobileSheet(true);needsUI=true;}
+function nextDispatch(){
+  state.nextDispatch=state.time+50+rnd(0,20);
+  const active=state.units.filter(u=>u.order).length;
+  const network=supplyNetwork();const disconnected=WORLD.filter(c=>owner(c.id)==='player'&&!network.reached.has(c.id)).length;
+  let msg=disconnected?`VERSORGUNGSMELDUNG: ${disconnected} Territorien ohne Anschluss.`:active?`LAGEBERICHT: ${active} Einsätze laufen; ${owned()} Gebiete kontrolliert.`:`LAGEBERICHT: ${owned()} Gebiete kontrolliert · +${incomePerMinute()} VP/min.`;
+  log(msg,disconnected?'warn':'normal');
+}
 function aiTurn(){
   const faction=Math.random()<.5?'red':'amber';const frontier=WORLD.filter(c=>owner(c.id)===faction);
   if(!frontier.length)return;
   let choices=[];
-  for(const c of frontier)for(const id of c.neighbors){if(owner(id)==='neutral')choices.push({from:c.id,id});else if(owner(id)==='player'&&state.time>100&&Math.random()<.12)choices.push({from:c.id,id});}
+  for(const c of frontier)for(const id of c.neighbors){if(owner(id)==='neutral')choices.push({from:c.id,id});else if(owner(id)==='player'&&state.time>65&&Math.random()<.78)choices.push({from:c.id,id});}
   if(!choices.length)return;
   const pick=choices[Math.floor(Math.random()*choices.length)],defender=state.countries[pick.id];
+  if(owner(pick.id)==='player'){
+    if(state.enemyOrders.some(o=>o.id===pick.id))return;
+    state.enemyOrders.push({id:pick.id,from:pick.from,faction,power:10+Math.floor(Math.random()*5),remaining:22});
+    state.speed=1;log(`FRONTALARM: ${SIDES[faction].name} marschiert von ${name(pick.from)} auf ${name(pick.id)}. 22 Sekunden Reaktionszeit!`,'bad');toast('FRONTALARM: '+name(pick.id)+' bedroht!',true);needsUI=true;return;
+  }
   const pwr=9+Math.floor(Math.random()*4);
-  const garrison=state.units.filter(u=>u.type==='army'&&u.country===pick.id&&!u.order).reduce((a,u)=>a+u.power,0);
+  const garrison=state.units.filter(u=>isGroundCombat(u)&&u.country===pick.id&&!u.order).reduce((a,u)=>a+u.power,0);
   if(pwr>=defender.defense+(defender.fort||0)*3+Math.min(12,garrison)){
-    const previous=defender.owner;defender.owner=faction;defender.defense=6;defender.fort=0;
+    const previous=defender.owner;defender.owner=faction;defender.defense=6;defender.fort=0;if(getIntel().has(pick.id))state.activity.push({id:pick.id,end:state.time+18});
     if(previous==='player'){if(state.bases.includes(pick.id)){state.baseHp=Math.max(0,state.baseHp-25);log('WARNUNG: Feindliche Kräfte bedrohen eine Militärbasis! -25 HQ','bad');}log(`${SIDES[faction].name} hat ${name(pick.id)} eingenommen!`,'bad');toast('Territorium verloren: '+name(pick.id),true);for(const u of state.units)if(u.country===pick.id&&!u.order)u.country=state.bases[0];}
     else if(getIntel().has(pick.id))log(`INTEL: ${name(pick.id)} von ${SIDES[faction].name} besetzt.`,'warn');
-  }else{defender.defense=Math.max(1,defender.defense-3);if(defender.fort>0)defender.fort=Math.max(0,defender.fort-1);if(owner(pick.id)==='player'&&garrison>0){const defending=state.units.find(u=>u.type==='army'&&u.country===pick.id&&!u.order);if(defending)defending.power=Math.max(2,defending.power-1);log(`${name(pick.id)}: Garnison wehrt feindlichen Vorstoß ab!`,'warn');}}
+  }else{defender.defense=Math.max(1,defender.defense-3);if(defender.fort>0)defender.fort=Math.max(0,defender.fort-1);if(owner(pick.id)==='player'&&garrison>0){const defending=state.units.find(u=>isGroundCombat(u)&&u.country===pick.id&&!u.order);if(defending)defending.power=Math.max(2,defending.power-1);log(`${name(pick.id)}: Garnison wehrt feindlichen Vorstoß ab!`,'warn');}}
 }
 function advanceIntel(dt){
   const pending=[];for(const item of state.intelOrders){item.remaining-=dt;if(item.remaining>0){pending.push(item);continue;}
@@ -450,6 +644,7 @@ function identify(){
 }
 function intercept(){
   let t=state.tracks.find(x=>x.id===selectedTrack);if(!t||!canSeeTrack(t))return toast('Kein verfolgbarer Radarkontakt ausgewählt.',true);
+  if(t.identified==='civil')return toast('Zivilflugzeug: kein Abfangauftrag erforderlich.',true);
   let eligible=state.units.filter(u=>u.type==='air'&&!u.order&&dist(...positionUnit(u),t.lon,t.lat)<1700);
   if(!eligible.length)return toast('Kein verfügbarer Abfangjäger in Reichweite.',true);
   const u=eligible[0];u.order={target:u.country,from:u.country,remaining:8,total:8,intercept:t.id};
@@ -462,7 +657,7 @@ function advanceInterceptions(dt){
     const t=state.tracks.find(x=>x.id===u.order.intercept);u.order=null;
     if(!t){log(`${u.id}: Zielkontakt verloren.`,'warn');continue;}
     t.identified=t.kind;
-    if(t.kind==='hostile'){state.score+=200;state.tracks=state.tracks.filter(x=>x!==t);log(`${u.id}: Feindkontakt ${t.id} abgefangen. +200 Punkte.`,'good');toast('Abfangmanöver erfolgreich!');}
+    if(t.kind==='hostile'){state.score+=200;state.tracks=state.tracks.filter(x=>x!==t);if(state.alertTrack===t.id)state.alertTrack=null;log(`${u.id}: Feindkontakt ${t.id} abgefangen. +200 Punkte.`,'good');toast('Abfangmanöver erfolgreich! HQ geschützt.');}
     else if(t.kind==='civil'){state.score-=75;log(`${u.id}: Fehlalarm! Zivilflugzeug ${t.id}. -75 Punkte.`,'bad');toast('Fehlalarm: ziviler Kontakt!',true);}
     else{state.score+=60;log(`${u.id}: Kontakt ${t.id} überprüft, keine gesicherte Identität.`,'good');}
     needsUI=true;
@@ -478,7 +673,7 @@ function build(kind){
   if(kind==='repair'&&(id!=='URY'||state.baseHp>=100))return toast('HQ-Reparatur nur in Uruguay bei Beschädigung.',true);
   if(kind==='reinforce'){
     const u=state.units.find(u=>u.id===selectedUnit);
-    if(!u||u.type!=='army'||u.country!==id||u.order||u.power>=10)return toast('Wähle eine geschwächte, freie Armee am Bauort.',true);
+    if(!u||!isGroundCombat(u)||u.country!==id||u.order||u.power>=maxPower(u))return toast('Wähle eine geschwächte, freie Armee am Bauort.',true);
   }
   if(kind==='navy'&&!c.coastal)return toast('Hier fehlt ein Zugang zur See.',true);
   if(kind==='base'&&state.bases.includes(id))return toast('Hier existiert bereits eine Militärbasis.',true);
@@ -486,13 +681,13 @@ function build(kind){
   state.supplies-=COST[kind];
   if(kind==='fort'){state.countries[id].fort++;state.countries[id].defense+=1;log(`${name(id)}: Befestigung Stufe ${state.countries[id].fort} errichtet.`,'good');}
   else if(kind==='repair'){state.baseHp=Math.min(100,state.baseHp+25);log(`HQ repariert: Integrität ${state.baseHp}%.`,'good');}
-  else if(kind==='reinforce'){const u=state.units.find(u=>u.id===selectedUnit);u.power=Math.min(10,u.power+3);log(`${u.id} verstärkt: Stärke ${u.power}/10.`,'good');}
+  else if(kind==='reinforce'){const u=state.units.find(u=>u.id===selectedUnit);u.power=Math.min(maxPower(u),u.power+3);log(`${u.id} verstärkt: Stärke ${u.power}/10.`,'good');}
   else if(kind==='radar'||kind==='base'){
     if(kind==='base')state.bases.push(id);
     let p=(id==='URY'&&kind==='base')?BASELOC:center(id),r={id:'RDR-'+String(state.nextRadar++).padStart(2,'0'),type:kind==='base'?'base':'fixed',country:id,lon:p[0],lat:p[1],range:kind==='base'?750:1050,label:(kind==='base'?'MILITÄRBASIS ':'RADAR ')+name(id).toUpperCase()};
     state.radars.push(r);log(`${r.id}: ${kind==='base'?'Neue Basis':'Radarstation'} in ${name(id)} einsatzbereit.`,'good');
   }else{
-    let prefix=kind==='army'?'A':kind==='navy'?'N':kind==='air'?'F':'M',unit={id:prefix+'-'+String(state.nextUnit++).padStart(2,'0'),type:kind,country:id,power:UNITMETA[kind].power,order:null};
+    let prefix=kind==='army'?'A':kind==='armor'?'P':kind==='recon'?'S':kind==='navy'?'N':kind==='air'?'F':'M',unit={id:prefix+'-'+String(state.nextUnit++).padStart(2,'0'),type:kind,country:id,power:UNITMETA[kind].power,order:null};
     state.units.push(unit);selectedUnit=unit.id;log(`${unit.id}: ${UNITMETA[kind].full} in ${name(id)} bereitgestellt.`,'good');
   }
   toast('Bau/Ausbildung abgeschlossen.');needsUI=true;
@@ -507,6 +702,8 @@ function tick(dt){
   updateTracks(speed);
   advanceIntel(speed);
   state.aiTimer-=speed;if(state.aiTimer<=0){state.aiTimer=26+rnd(0,10);aiTurn();}
+  advanceEnemyOrders(speed);
+  if(state.time>=state.nextDispatch)nextDispatch();
   if(state.baseHp<=0&&!state.over){state.over=true;state.paused=true;openModal('defeat');}
   if(state.time-lastAutosave>16){save(false);lastAutosave=state.time;}
 }
@@ -550,6 +747,43 @@ function drawWorld(w,h){
       const [x,y]=project(...c.center,w,h);if(x>5&&y>5&&x<w-5&&y<h-5){wctx.font='bold 12px Courier New';wctx.fillStyle='#d88e73';wctx.fillText('!',x+10,y+2);}
     }
   }
+  // Enemy offensive arrows: known invasion notices, not invisible omniscient unit positions.
+  for(const attack of state.enemyOrders||[]){
+    const [x,y]=project(...center(attack.id),w,h),[fx,fy]=project(...center(attack.from),w,h);
+    if(x<-60||y<-60||x>w+60||y>h+60)continue;
+    wctx.save();wctx.lineWidth=2.8;wctx.strokeStyle='#e48e75';wctx.setLineDash([7,5]);
+    wctx.beginPath();wctx.moveTo(fx,fy);wctx.lineTo(x,y);wctx.stroke();wctx.setLineDash([]);
+    const t=state.time*3.2,glow=17+Math.sin(t)*5;
+    wctx.beginPath();wctx.arc(x,y,glow,0,2*Math.PI);wctx.strokeStyle='#ecb17d';wctx.lineWidth=2;wctx.stroke();
+    wctx.fillStyle='#ffe1ae';wctx.font='bold 11px Courier New';wctx.fillText('ANGRIFF '+Math.ceil(attack.remaining)+'s',x+18,y-14);wctx.restore();
+  }
+  // Valid destinations glow on the map so players know where units can be ordered.
+  const activeUnit=state.units.find(u=>u.id===selectedUnit);
+  if(activeTab==='operations'&&activeUnit&&!activeUnit.order&&camera.zoom>=2.5){
+    const targets=reachableTargets(activeUnit).filter(id=>id!==activeUnit.country||owner(id)!=='player');
+    wctx.save();wctx.lineWidth=1.9;wctx.setLineDash([6,4]);
+    for(const target of targets){
+      const c=COUNTRIES[target];if(!c)continue;
+      const b=c._bounds;if(b){const lo=project(b[0],b[3],w,h),hi=project(b[2],b[1],w,h);if(hi[0]<-10||lo[0]>w+10||hi[1]<-10||lo[1]>h+10)continue;}
+      wctx.beginPath();outline(wctx,c,w,h);wctx.strokeStyle=owner(target)==='player'?'rgba(122,235,152,.8)':'rgba(236,202,117,.87)';wctx.stroke();
+    }
+    wctx.restore();
+  }
+  if(activeTab==='build'&&camera.zoom>=2.4){
+    wctx.save();wctx.lineWidth=1.2;wctx.setLineDash([2,5]);wctx.strokeStyle='rgba(139,218,155,.8)';
+    for(const c of WORLD)if(owner(c.id)==='player'||state.bases.includes(c.id)){
+      const [x,y]=project(...c.center,w,h);if(x<-10||y<-10||x>w+10||y>h+10)continue;
+      wctx.beginPath();wctx.arc(x,y,17,0,Math.PI*2);wctx.stroke();
+    }
+    wctx.restore();
+  }
+  if(activeUnit&&camera.zoom>=2.1){
+    const from=project(...positionUnit(activeUnit),w,h),to=project(...center(selectedCountry),w,h);
+    if(activeUnit.country!==selectedCountry&&unitIsAvailable(activeUnit,selectedCountry)){
+      wctx.save();wctx.strokeStyle=owner(selectedCountry)==='player'?'#9bdfab':'#e6cd88';wctx.lineWidth=2;wctx.setLineDash([7,5]);wctx.beginPath();wctx.moveTo(from[0],from[1]);wctx.lineTo(to[0],to[1]);wctx.stroke();wctx.setLineDash([]);
+      const a=Math.atan2(to[1]-from[1],to[0]-from[0]);wctx.beginPath();wctx.moveTo(to[0],to[1]);wctx.lineTo(to[0]-13*Math.cos(a-.45),to[1]-13*Math.sin(a-.45));wctx.moveTo(to[0],to[1]);wctx.lineTo(to[0]-13*Math.cos(a+.45),to[1]-13*Math.sin(a+.45));wctx.stroke();wctx.restore();
+    }
+  }
   // Selected-country outline is drawn again to remain visible over borders.
   if(COUNTRIES[selectedCountry]){wctx.beginPath();outline(wctx,COUNTRIES[selectedCountry],w,h);wctx.strokeStyle='#c4e6a3';wctx.lineWidth=1.8;wctx.stroke();}
   // The world geometry remains known; only current information is obscured.
@@ -573,6 +807,13 @@ function drawWorld(w,h){
   for(const c of WORLD)if(owner(c.id)==='player'&&state.countries[c.id].fort>0){
     const [x,y]=project(...c.center,w,h);if(x>=0&&y>=0&&x<=w&&y<=h){wctx.fillStyle='#c8d3a3';wctx.font='bold 11px Courier New';wctx.fillText('▤'+state.countries[c.id].fort,x+8,y+16);}
   }
+  for(const event of state.activity||[]){
+    const [x,y]=project(...center(event.id),w,h);
+    if(x<0||y<0||x>w||y>h)continue;
+    let p=1-clamp((event.end-state.time)/18,0,1);
+    wctx.beginPath();wctx.arc(x,y,9+p*29,0,Math.PI*2);
+    wctx.strokeStyle=`rgba(233,205,119,${(.8-p*.8).toFixed(3)})`;wctx.lineWidth=2;wctx.stroke();
+  }
   for(const r of state.radars){const [x,y]=project(r.lon,r.lat,w,h);if(x<0||y<0||x>w||y>h)continue;drawBaseMarker(wctx,x,y,r.type==='base'?'HQ':'RDR',r.id===selectedRadar);}
   // Aircraft map symbols can be seen only when detected.
   for(const t of state.tracks){if(!canSeeTrack(t))continue;const [x,y]=project(t.lon,t.lat,w,h);if(x<0||y<0||x>w||y>h)continue;drawPlane(wctx,x,y,t.heading,t.identified==='hostile'?'#df8f7a':t.identified==='civil'?'#7adea0':'#dcc17d',6);}
@@ -580,9 +821,8 @@ function drawWorld(w,h){
     let u=state.units[i],p=positionUnit(u),[x,y]=project(p[0],p[1],w,h);
     if(!u.order){const same=state.units.filter(v=>v.country===u.country&&!v.order);const index=same.indexOf(u);x+=(index%3)*15-15;y+=Math.floor(index/3)*15+9;}
     if(x<0||y<0||x>w||y>h)continue;
-    if(u.type==='air')drawPlane(wctx,x,y,Math.PI/2,selectedUnit===u.id?'#f9e7a3':'#a1d6b1',7);
-    else{wctx.fillStyle=selectedUnit===u.id?'#d7eab2':'#9fcdad';wctx.strokeStyle=selectedUnit===u.id?'#e6eab3':'#75a888';wctx.lineWidth=1.1;wctx.strokeRect(x-6,y-6,12,12);wctx.font='bold 12px Courier New';wctx.textAlign='center';wctx.fillText(u.type==='army'?'A':u.type==='navy'?'N':'R',x,y+4);wctx.textAlign='left';}
-    if(u.id===selectedUnit){wctx.beginPath();wctx.arc(x,y,12,0,Math.PI*2);wctx.strokeStyle='#d9e9a9';wctx.setLineDash([2,3]);wctx.stroke();wctx.setLineDash([]);}
+    drawUnitGlyph(wctx,u.type,x,y,u.id===selectedUnit);
+    if(camera.zoom>4.5 || u.id===selectedUnit){wctx.font='bold 9px Courier New';wctx.textAlign='center';wctx.fillStyle=u.id===selectedUnit?'#f8eabb':'#c2dbc1';wctx.fillText(u.id,x,y-17);wctx.textAlign='left';}
   }
   wctx.fillStyle='rgba(18,33,24,.3)';wctx.fillRect(0,0,w,1);
 }
@@ -590,8 +830,39 @@ function camLine(s){return s>10?.85:.6;}
 function drawPlane(ctx,x,y,heading,col,size=8){
   ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI/2-heading);ctx.strokeStyle=col;ctx.fillStyle='rgba(0,0,0,.25)';ctx.lineWidth=1.2;ctx.beginPath();ctx.moveTo(0,-size);ctx.lineTo(size*.65,size*.65);ctx.lineTo(0,size*.28);ctx.lineTo(-size*.65,size*.65);ctx.closePath();ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(0,size*.45);ctx.lineTo(0,size*2.1);ctx.stroke();ctx.restore();
 }
+function drawUnitGlyph(ctx,type,x,y,selected=false){
+  ctx.save();ctx.translate(x,y);
+  ctx.fillStyle='#102119';ctx.strokeStyle=selected?'#f5e3a0':'#b5dfb9';ctx.lineWidth=1.5;
+  if(type==='armor'){
+    ctx.strokeRect(-12,-7,24,15);ctx.strokeRect(-13,-10,26,3);ctx.strokeRect(-13,8,26,3);
+    ctx.strokeRect(-4,-12,12,5);ctx.beginPath();ctx.moveTo(8,-10);ctx.lineTo(17,-10);ctx.stroke();
+  }else if(type==='recon'){
+    ctx.beginPath();ctx.moveTo(-10,9);ctx.lineTo(10,9);ctx.moveTo(0,9);ctx.lineTo(0,-10);ctx.moveTo(0,-10);ctx.lineTo(-8,-2);ctx.moveTo(0,-10);ctx.lineTo(8,-2);ctx.stroke();
+    ctx.beginPath();ctx.arc(0,-10,3,0,Math.PI*2);ctx.stroke();
+  }else if(type==='army'){
+    // Tiny armored vehicle: treads, chassis, turret, barrel.
+    ctx.fillRect(-10,-7,20,14);ctx.strokeRect(-10,-7,20,14);
+    ctx.strokeRect(-10,-10,20,3);ctx.strokeRect(-10,7,20,3);
+    ctx.beginPath();ctx.arc(-1,0,4,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(2,0);ctx.lineTo(13,0);ctx.stroke();
+  }else if(type==='navy'){
+    // Vessel silhouette: pointed bow and elevated bridge.
+    ctx.beginPath();ctx.moveTo(-12,3);ctx.lineTo(12,3);ctx.lineTo(6,10);ctx.lineTo(-8,10);ctx.closePath();ctx.stroke();
+    ctx.strokeRect(-4,-4,9,7);ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(0,-10);ctx.moveTo(3,-4);ctx.lineTo(8,1);ctx.stroke();
+  }else if(type==='mobile'){
+    ctx.strokeRect(-11,2,17,7);ctx.beginPath();ctx.arc(-6,11,2,0,Math.PI*2);ctx.arc(5,11,2,0,Math.PI*2);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(-3,1);ctx.lineTo(1,-6);ctx.moveTo(-7,-8);ctx.quadraticCurveTo(0,-16,7,-8);ctx.moveTo(-10,-11);ctx.quadraticCurveTo(0,-20,10,-11);ctx.stroke();
+  }else if(type==='air'){
+    drawPlane(ctx,0,0,Math.PI/2,selected?'#f5e3a0':'#b5dfb9',9);
+  }
+  if(selected){ctx.setLineDash([3,3]);ctx.beginPath();ctx.arc(0,0,16,0,Math.PI*2);ctx.stroke();}
+  ctx.restore();
+}
 function drawBaseMarker(ctx,x,y,label,active){
-  ctx.save();ctx.strokeStyle=active?'#d9f7b7':'#9ed4a6';ctx.fillStyle='#c5f0ae';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(x-10,y);ctx.lineTo(x,y-10);ctx.lineTo(x+10,y);ctx.lineTo(x,y+10);ctx.closePath();ctx.stroke();ctx.fillRect(x-2,y-2,4,4);ctx.font='10px Courier New';ctx.fillText(label,x+14,y-6);ctx.restore();
+  ctx.save();ctx.translate(x,y);ctx.strokeStyle=active?'#e9e7a5':'#9ed4a6';ctx.fillStyle='#0f2617';ctx.lineWidth=1.4;
+  if(label==='HQ'){ctx.beginPath();ctx.moveTo(-9,7);ctx.lineTo(-9,-6);ctx.lineTo(0,-12);ctx.lineTo(9,-6);ctx.lineTo(9,7);ctx.closePath();ctx.fill();ctx.stroke();ctx.strokeRect(-3,-2,6,9);}
+  else{ctx.beginPath();ctx.arc(0,-5,8,Math.PI*1.1,Math.PI*1.9);ctx.moveTo(-10,-9);ctx.arc(0,-5,12,Math.PI*1.15,Math.PI*1.85);ctx.moveTo(0,-5);ctx.lineTo(0,9);ctx.moveTo(-8,9);ctx.lineTo(8,9);ctx.stroke();ctx.fillRect(-2,-7,4,4);}
+  ctx.font='10px Courier New';ctx.fillStyle='#d0f3bd';ctx.fillText(label,14,-6);ctx.restore();
 }
 function drawRadar(w,h){
   const r=sensorSelected();if(!r)return;
@@ -637,7 +908,7 @@ function countryBounding(c){let xs=[],ys=[];for(const poly of pathsOf(c))for(con
 for(const c of WORLD){c._bounds=countryBounding(c);}
 function selectMapAt(x,y){
   const [w,h]=sizeCanvas(worldCanvas,wctx);
-  for(let i=state.units.length-1;i>=0;i--){let u=state.units[i],p=positionUnit(u),[ux,uy]=project(p[0],p[1],w,h);if(!u.order){const same=state.units.filter(v=>v.country===u.country&&!v.order),idx=same.indexOf(u);ux+=(idx%3)*15-15;uy+=Math.floor(idx/3)*15+9;}if(Math.hypot(ux-x,uy-y)<(isMobile()?24:13)){selectedUnit=u.id;selectedCountry=u.country;activeTab='operations';needsUI=true;return;}}
+  for(let i=state.units.length-1;i>=0;i--){let u=state.units[i],p=positionUnit(u),[ux,uy]=project(p[0],p[1],w,h);if(!u.order){const same=state.units.filter(v=>v.country===u.country&&!v.order),idx=same.indexOf(u);ux+=(idx%3)*15-15;uy+=Math.floor(idx/3)*15+9;}if(Math.hypot(ux-x,uy-y)<(isMobile()?24:13)){selectedUnit=u.id;selectedCountry=u.country;tab('operations');if(isMobile())setMobileSheet(true);needsUI=true;return;}}
   for(const t of state.tracks){if(!canSeeTrack(t))continue;const [tx,ty]=project(t.lon,t.lat,w,h);if(Math.hypot(tx-x,ty-y)<(isMobile()?21:12)){selectedTrack=t.id;openRadar();needsUI=true;return;}}
   const [lon,lat]=unproject(x,y,w,h);let hit=hitCountry(lon,lat);
   if(!hit&&isMobile()){
@@ -646,14 +917,14 @@ function selectMapAt(x,y){
     hit=nearest;
   }
   if(hit)selectedCountry=hit;
-  if(isMobile()&&hit){tab('operations');document.querySelector('.sidebar-scroll').scrollTop=0;setMobileSheet(true);}
+  if(isMobile()&&hit){tab(activeTab==='build'?'build':'operations');document.querySelector('.sidebar-scroll').scrollTop=0;setMobileSheet(true);}
   needsUI=true;
 }
 function selectRadarAt(x,y){
   const [w,h]=sizeCanvas(radarCanvas,rctx),r=sensorSelected();if(!r)return;const cx=w/2,cy=h/2+11,R=Math.min(w*.44,h*.445),k=R/r.range;
   let best=null,bestD=isMobile()?29:19;
   for(let t of tracksAt(r)){let tx=cx+(t.lon-r.lon)*111.2*Math.cos(rad(r.lat))*k,ty=cy-(t.lat-r.lat)*111.2*k,d=Math.hypot(tx-x,ty-y);if(d<bestD){best=t;bestD=d;}}
-  if(best){selectedTrack=best.id;activeTab='intel';needsUI=true;}
+  if(best){selectedTrack=best.id;tab('intel');if(isMobile())setMobileSheet(true);needsUI=true;}
 }
 function zoomAt(mult,x=null,y=null){
   const rect=worldCanvas.getBoundingClientRect(),w=rect.width,h=rect.height;
@@ -727,28 +998,120 @@ function openRadar(){activeView='radar';$('world-view').classList.add('hidden');
 function openWorld(){activeView='world';$('radar-view').classList.add('hidden');$('world-view').classList.remove('hidden');$('view-eyebrow').textContent='01 / STRATEGIC THEATER';$('view-title').innerHTML='WELTKARTE <span>/ GLOBAL SITUATION</span>';$('mode-label').textContent='FOG OF WAR ACTIVE';$('nav-radar').classList.remove('active');$('nav-world').classList.add('active');updateMobileNav();needsUI=true;}
 function tab(t){activeTab=t;updateMobileNav();for(let el of document.querySelectorAll('.tab'))el.classList.toggle('active',el.dataset.tab===t);for(let t2 of ['operations','build','intel'])$('panel-'+t2).classList.toggle('hidden',t!==t2);needsUI=true;}
 function detailRows(rows){return `<div class="data-grid">${rows.map(([a,b])=>`<div><span class="key">${esc(a)}</span><span class="value">${esc(b)}</span></div>`).join('')}</div>`;}
-function unitIsAvailable(u,target){if(!u||u.order||!COUNTRIES[target])return false;if(u.type==='mobile'&&owner(target)!=='player'&&!state.bases.includes(target))return false;if(u.type==='army'||u.type==='mobile')return u.country===target||COUNTRIES[u.country]?.neighbors.includes(target);if(u.type==='navy')return COUNTRIES[target].coastal;if(u.type==='air')return dist(...positionUnit(u),...center(target))<=2100;return false;}
-function operationsHTML(){
-  const id=selectedCountry,c=COUNTRIES[id],o=owner(id),visible=getIntel().has(id),isHQ=state.bases.includes(id),u=state.units.find(u=>u.id===selectedUnit);
-  const status=!visible?'NICHT AUFGEKLÄRT':isHQ?'HQ / SEKTOR':o==='player'?'KONTROLLIERT':o==='neutral'?'NEUTRAL':'FEINDLICH';
-  const country=`<div class="selection-card"><header><div><h3>${esc(name(id))}</h3><div class="sub">${esc(c?.continent||'')} / ${id}</div></div><span class="tag ${o==='player'?'':o==='neutral'?'neutral':'enemy'}">${status}</span></header>${detailRows([['STATUS',visible?SIDES[o].name:'UNBEKANNT'],['VERTEIDIGUNG',visible?String(state.countries[id].defense):'???'],['KÜSTENZUGANG',c?.coastal?'JA':'NEIN'],['RADARABDECKUNG',activeRadars().some(r=>dist(r.lon,r.lat,...center(id))<r.range)?'VORHANDEN':'KEINE'],['VERSORGUNG',isSupplied(id)?'VERBUNDEN':'UNTERBROCHEN'],['BEFESTIGUNG','STUFE '+(state.countries[id].fort||0)],['LUFTAUFKLÄRUNG',state.recon?.[id]>state.time?Math.ceil(state.recon[id]-state.time)+'s AKTIV':'KEINE']])}</div>`;
-  const can=u&&unitIsAvailable(u,id);let orderText=u?.order?'AUFTRAG LÄUFT':u?.type==='army'&&o!=='player'?'ANGRIFF AUF '+name(id):u?.type==='air'?'LUFTPATROUILLE STARTEN':u?.type==='navy'?'FLOTTE VERLEGEN':'EINHEIT VERLEGEN';
-  const action=`<div class="module"><div class="panel-title">BEFEHLSAUSGABE</div><p class="panel-desc">Ziel: <b>${esc(name(id))}</b><br>Einheit: <b>${u?esc(u.id):'KEINE'}</b></p><div class="button-stack" style="margin-top:10px"><button class="action-btn ${o==='player'?'':'warn'}" data-action="order" ${can?'':'disabled'}>${esc(orderText)} <span>→</span></button>${u?.type==='air'?`<button class="action-btn ghost" data-action="recon" ${can?'':'disabled'}>LUFTAUFKLÄRUNG <span>12s · 120s INTEL</span></button>`:''}${u?.type==='army'&&o!=='player'?`<button class="action-btn ghost" data-action="group" ${can&&state.units.filter(x=>x.type==='army'&&!x.order&&x.country===u.country).length>=2?'':'disabled'}>KOORDINIERTER ANGRIFF <span>2–4 ARMEEN</span></button>`:''}</div>${!can?'<p class="tagline" style="margin-top:8px">Einheit auswählen; Armee erreicht nur Nachbarländer, Luftwaffe 2.100 km, Navy Küsten.</p>':''}</div>`;
-  const unitRows=state.units.map(u=>`<button class="unit-row ${selectedUnit===u.id?'active':''}" data-unit="${u.id}"><span class="unit-symbol">${UNITMETA[u.type].symbol}</span><span class="unit-info"><strong>${u.id} · ${UNITMETA[u.type].name}</strong><small>${esc(name(u.country))}${u.order?' → '+esc(name(u.order.target))+' ('+Math.ceil(u.order.remaining)+'s)':''}</small></span><span class="unit-hp">${u.type==='mobile'?'RDR':u.power+'/10'}</span></button>`).join('');
-  return `<div><div class="panel-title">GEWÄHLTES GEBIET</div>${country}</div>${action}<div><div class="panel-title">EIGENE EINHEITEN · ${state.units.length}</div><div class="unit-list">${unitRows}</div></div><div class="tip">TIPP: Klicke erst auf eine Einheit, dann auf ein Land in der Weltkarte und schließlich auf <b>ANGRIFF</b> bzw. <b>VERLEGEN</b>.</div>`;
+function unitIsAvailable(u,target){if(!u||u.order||!COUNTRIES[target])return false;if(u.type==='mobile'&&owner(target)!=='player'&&!state.bases.includes(target))return false;if(isGroundUnit(u))return u.country===target||COUNTRIES[u.country]?.neighbors.includes(target);if(u.type==='navy')return COUNTRIES[target].coastal;if(u.type==='air')return dist(...positionUnit(u),...center(target))<=2100;return false;}
+function reachableTargets(u){
+  if(!u)return [];
+  let arr=[];
+  if(isGroundUnit(u))arr=[u.country,...(COUNTRIES[u.country]?.neighbors||[])];
+  else if(u.type==='air')arr=WORLD.filter(c=>dist(...positionUnit(u),...c.center)<=2100).map(c=>c.id);
+  else if(u.type==='navy')arr=WORLD.filter(c=>c.coastal).map(c=>c.id);
+  return [...new Set(arr)].filter(id=>COUNTRIES[id]&&unitIsAvailable(u,id)&&!(id===u.country&&owner(id)==='player'&&isGroundCombat(u)));
 }
+function preferredGoal(){
+  const waiting=state.units.filter(u=>isGroundCombat(u)&&!u.order);
+  for(const target of ['URY','PRY','ARG','BOL','BRA','CHL'])if(owner(target)!=='player'){
+    let unit=waiting.find(u=>reachableTargets(u).includes(target));
+    if(unit)return {unit,target,action:'attack'};
+  }
+  const options=[];
+  for(const unit of waiting)for(const target of reachableTargets(unit))if(owner(target)!=='player')options.push({unit,target,action:'attack'});
+  options.sort((a,b)=>state.countries[a.target].defense-state.countries[b.target].defense);
+  if(options.length)return options[0];
+  const pending=state.units.filter(u=>u.order);
+  if(pending.length)return {unit:pending[0],target:pending[0].order?.target,action:'wait'};
+  return {unit:null,target:state.bases[0],action:'build'};
+}
+function pointCameraAt(id){
+  if(!COUNTRIES[id])return;
+  const [lon,lat]=center(id);camera.lon=lon;camera.lat=lat;
+  if(camera.zoom<5)camera.zoom=window.innerWidth<=1100?8:5.6;
+  camera.lon=clamp(camera.lon,-180,180);camera.lat=clamp(camera.lat,-80,80);
+}
+function focusGoal(){
+  if(currentFrontThreat()&&!detectedThreat())return openFrontThreat();
+  const g=preferredGoal();if(!g)return;
+  if(g.unit)selectedUnit=g.unit.id;
+  selectedCountry=g.target;openWorld();tab('operations');pointCameraAt(g.target);
+  if(isMobile())setMobileSheet(false);
+  needsUI=true;
+}
+function actGoal(){
+  if(currentFrontThreat()&&!detectedThreat())return openFrontThreat();
+  const g=preferredGoal();if(!g)return;
+  if(g.action==='attack'){
+    selectedUnit=g.unit.id;selectedCountry=g.target;
+    pointCameraAt(g.target);openWorld();issueOrder();
+    if(isMobile())setMobileSheet(false);
+  }else{tab(g.action==='build'?'build':'operations');if(isMobile())setMobileSheet(true);}
+  needsUI=true;
+}
+function refreshGuide(){
+  const g=preferredGoal(),t=$('mission-title'),d=$('mission-detail'),a=$('mission-act');
+  const front=currentFrontThreat();
+  if(front&&!detectedThreat()){t.textContent='FRONTALARM: '+name(front.id);d.textContent='Noch '+Math.ceil(front.remaining)+'s · Garnison verstärken!';a.textContent='FRONT ANZEIGEN →';a.disabled=false;$('mission-focus').textContent='FRONT';}else{
+  if(g?.action==='attack'){
+    t.textContent=`${name(g.target)} einnehmen`;
+    d.textContent=`${g.unit.id} · Verband bereit · Stärke ${g.unit.power}/${maxPower(g.unit)}`;
+    a.textContent='ANGREIFEN →';a.disabled=false;
+  }else if(g?.action==='wait'){
+    t.textContent=`${name(g.target)} · Truppen unterwegs`;
+    d.textContent=`${g.unit.id} · Noch ${Math.ceil(g.unit.order.remaining)} Spielsekunden`;
+    a.textContent='TRUPPEN →';a.disabled=false;
+  }else{
+    t.textContent=state.won?'Freies Kommando · weiter expandieren':'Neue Armee aufstellen';
+    d.textContent='Baue eine weitere Einheit an deiner Basis.';
+    a.textContent='BAUEN →';a.disabled=false;
+  }
+  $('mission-focus').textContent=g?.action==='attack'?'ZIEL ZEIGEN':g?.action==='wait'?'AUFTRAG':'BASIS ZEIGEN';}
+  const threat=detectedThreat(),alert=$('global-alert');
+  if(threat){
+    alert.classList.remove('hidden');
+    const km=Math.round(dist(threat.lon,threat.lat,...BASELOC));
+    alert.innerHTML=`⚠ RADARWARNUNG: ${esc(threat.id)} · ${km} KM ZUR BASIS <span>→</span>`;
+    $('radar-warning').classList.remove('hidden');
+    $('radar-warning').textContent=`⚠ ${threat.id} IM ANFLUG · IDENTIFIZIEREN / ABFANGEN`;
+  }else{$('radar-warning').classList.add('hidden');const front=currentFrontThreat();
+    if(front){alert.classList.remove('hidden');alert.innerHTML=`⚠ FRONTWARNUNG: ${esc(name(front.id))} · ${Math.ceil(front.remaining)}s BIS ANGRIFF <span>→</span>`;}
+    else alert.classList.add('hidden');}
+}
+function openThreat(){
+  const t=detectedThreat();if(!t)return toast('Kein aktuell erfasster Luftangriff.');
+  selectedTrack=t.id;const station=activeRadars().find(r=>canSeeTrack(t,r));
+  if(station)selectedRadar=station.id;
+  openRadar();tab('intel');
+  if(isMobile())setMobileSheet(true);
+  needsUI=true;
+}
+function operationsHTML(){
+  const id=selectedCountry,c=COUNTRIES[id],o=owner(id),visible=getIntel().has(id),isHQ=state.bases.includes(id),u=state.units.find(x=>x.id===selectedUnit);
+  const status=!visible?'NICHT AUFGEKLÄRT':isHQ?'HQ / SEKTOR':o==='player'?'KONTROLLIERT':o==='neutral'?'NEUTRAL':'FEINDLICH';
+  const country=`<div class="selection-card"><header><div><h3>${esc(name(id))}</h3><div class="sub">${esc(c?.continent||'')} / ${id}</div></div><span class="tag ${o==='player'?'':o==='neutral'?'neutral':'enemy'}">${status}</span></header>${detailRows([['STATUS',visible?SIDES[o].name:'UNBEKANNT'],['VERTEIDIGUNG',visible?String(state.countries[id].defense):'???'],['KÜSTENZUGANG',c?.coastal?'JA':'NEIN'],['RADARABDECKUNG',activeRadars().some(r=>dist(r.lon,r.lat,...center(id))<r.range)?'VORHANDEN':'KEINE'],['VERSORGUNG',isSupplied(id)?'VERBUNDEN':'UNTERBROCHEN'],['BEFESTIGUNG','STUFE '+(state.countries[id].fort||0)]])}</div>`;
+  const can=u&&unitIsAvailable(u,id);let orderText=u?.order?'AUFTRAG LÄUFT':isGroundCombat(u)&&o!=='player'?'ANGREIFEN: '+name(id):u?.type==='air'?'FLUG VERLEGEN':u?.type==='navy'?'FLOTTE VERLEGEN':'EINHEIT VERLEGEN';
+  const front=currentFrontThreat(),frontHTML=front?`<div class="invasion-note"><strong>⚠ ANGRIFF AUF ${esc(name(front.id).toUpperCase())} IN ${Math.ceil(front.remaining)}s</strong><small>Feindliche Kräfte aus ${esc(name(front.from))}. Schicke Armeen zur Verteidigung oder verstärke das Gebiet.</small><button data-action="front">BEDROHTES GEBIET ANZEIGEN →</button></div>`:'';
+  const steps=`<div class="order-steps"><b class="${u?'done':''}">1 · EINHEIT</b><span>→</span><b class="${id?'done':''}">2 · ZIEL</b><span>→</span><b>3 · BEFEHL</b></div>`;
+  const choices=u&&!u.order?reachableTargets(u).sort((a,b)=>((a==='URY')?-99:(a==='PRY')?-80:(a==='ARG')?-60:state.countries[a].defense)-((b==='URY')?-99:(b==='PRY')?-80:(b==='ARG')?-60:state.countries[b].defense)).slice(0,10):[];
+  const targetChoices=`<div class="panel-title">${u?'ERREICHBARE ZIELE FÜR '+esc(u.id):'EINHEIT AUSWÄHLEN'}</div><p class="panel-desc">Hier siehst du, wohin die ausgewählte Einheit tatsächlich kann. Ziel antippen, anschließend Befehl geben.</p><div class="target-list">${choices.map(target=>`<button data-target="${target}" class="target-choice ${target===id?'active':''} ${owner(target)==='player'?'friendly':''}"><span class="symbol-mini">${owner(target)==='player'?'◆':'↗'}</span>${esc(name(target))}<small>${owner(target)==='player'?'EIGENES GEBIET':getIntel().has(target)?'VERTEIDIGUNG '+state.countries[target].defense:'VERTEIDIGUNG ???'}</small></button>`).join('')||'<div class="section-assist">Keine Ziele erreichbar. Wähle eine andere Einheit oder baue einen Verband.</div>'}</div>`;
+  const strength=isGroundCombat(u)?u.power+(getAirSupport(id)+getNavalSupport(id)):0;
+  const preview=isGroundCombat(u)&&o!=='player'?`<div class="battle-preview">${visible?`ANGRIFFSKRAFT <b>${strength}</b> / BEKANNTE ABWEHR <b>${state.countries[id].defense+(state.countries[id].fort||0)*3}</b>`:'Feindlage unbekannt: erst mit Spähern oder Luftaufklärung untersuchen.'}<br><small>Ergebnis hängt auch von Versorgung, Unterstützung und Zufall ab.</small></div>`:'';
+  const action=`<div class="module"><div class="panel-title">BEFEHLSAUSGABE</div>${steps}${preview}<p class="panel-desc"><b>${u?esc(u.id+' · '+UNITMETA[u.type].full):'Bitte Einheit wählen'}</b> → <b>${esc(name(id))}</b></p><div class="button-stack" style="margin-top:10px"><button class="action-btn ${can&&isGroundCombat(u)&&o!=='player'?'go':o==='player'?'':'warn'}" data-action="order" ${can?'':'disabled'}>${esc(orderText)} <span>→</span></button>${u?.type==='air'?`<button class="action-btn ghost" data-action="recon" ${can?'':'disabled'}>LUFTAUFKLÄRUNG <span>12s · 120s INTEL</span></button>`:''}${isGroundCombat(u)&&o!=='player'?`<button class="action-btn ghost" data-action="group" ${can&&state.units.filter(x=>isGroundCombat(x)&&!x.order&&x.country===u.country).length>=2?'':'disabled'}>KOORDINIERTER ANGRIFF <span>2–4 ARMEEN</span></button>`:''}</div>${!can?'<p class="target-hint">Dieses Ziel ist nicht erreichbar oder die Einheit ist bereits unterwegs. Tippe eines der passenden Ziele oben an.</p>':''}<button data-action="goto-build" class="action-btn ghost" style="margin-top:9px">IN DIESEM GEBIET BAUEN <span>＋</span></button></div>`;
+  const unitRows=state.units.slice().sort((a,b)=>Number(!!a.order)-Number(!!b.order)).map(unit=>`<button class="unit-row ${selectedUnit===unit.id?'active':''}" data-unit="${unit.id}" aria-label="${esc(UNITMETA[unit.type].full+' '+unit.id+' in '+name(unit.country))}"><span class="unit-symbol">${iconSVG(unit.type)}</span><span class="unit-info"><strong>${unit.id} · ${UNITMETA[unit.type].name}</strong><small>${esc(name(unit.country))}${unit.order?' → '+esc(name(unit.order.target))+' ('+Math.ceil(unit.order.remaining)+'s)':' · BEREIT'}</small></span><span class="unit-hp">${unit.type==='mobile'?'RDR':unit.power+'/'+maxPower(unit)}</span></button>`).join('');
+  return `${frontHTML}<div class="section-assist compact-assist"><strong>1</strong> EINHEIT WÄHLEN → <strong>2</strong> ZIEL ANTIPPEN → <strong>3</strong> BEFEHL STARTEN.</div><div><div class="panel-title">1 / TRUPPE AUSWÄHLEN · ${state.units.length}</div><div class="unit-list quick-grid">${unitRows}</div></div><div>${targetChoices}</div>${action}<div><div class="panel-title">ZIELINFORMATIONEN</div>${country}</div>`;
+}
+
 function buildHTML(){
   const id=selectedCountry,c=COUNTRIES[id],yes=owner(id)==='player'||state.bases.includes(id);
-  const defs=[['army','Infanterieverband','Erobert Land und verteidigt Stellungen.'],['air','Kampfflugzeug','Patrouille und Abfangmanöver.'],['navy','Patrouillenschiff','Seeaufklärung und Küstenunterstützung.'],['mobile','Mobiles Radar','Verlegbares Radar mit 470 km Reichweite.'],['radar','Stationäres Radar','Neue Luftüberwachung mit 1.050 km Radius.'],['base','Militärbasis','Verbindet abgeschnittene Gebiete mit dem Versorgungsnetz.'],['fort','Befestigung','Bis Stufe 3: Erhöht territoriale Verteidigung.'],['reinforce','Armee verstärken','Stellt Kampfstärke einer beschädigten Armee wieder her.'],['repair','HQ reparieren','Repariert die Startbasis um 25 Prozentpunkte.']];
-  return `<div class="selection-card"><div class="panel-title">BAU- & AUSBILDUNGSORT</div><h3>${esc(name(id))}</h3><p class="panel-desc" style="margin-top:7px">${yes?'Standort freigegeben.':'Noch kein eigenes Gebiet. Gebiet zuerst erobern.'}</p>${detailRows([['VERFÜGBARE VP',Math.floor(state.supplies).toString()],['EINKOMMEN',incomePerMinute()+' VP / MIN'],['VERSORGUNG',isSupplied(id)?'VERBUNDEN':'ABGESCHNITTEN']])}</div><div><div class="panel-title">MILITÄRISCHER AUSBAU</div>${defs.map(([key,title,description])=>`<div class="build-row" style="margin-bottom:7px"><div><strong>${title}</strong><div class="sub">${description}</div></div><button data-build="${key}" ${!yes||state.supplies<COST[key]||(!isSupplied(id)&&key!=='base')||(key==='navy'&&!c.coastal)||(key==='base'&&state.bases.includes(id))||(key==='fort'&&(owner(id)!=='player'||state.countries[id].fort>=3))||(key==='repair'&&(id!=='URY'||state.baseHp>=100))||(key==='reinforce'&&!state.units.some(u=>u.id===selectedUnit&&u.type==='army'&&u.country===id&&!u.order&&u.power<10))?'disabled':''}>${COST[key]} VP</button></div>`).join('')}</div><div class="tip">Basis und Territorien produzieren automatisch VP. Ohne Verbindung zur Basis fehlt Einkommen und die meisten Bauaktionen sind gesperrt. Neue Militärbasen stellen die Verbindung wieder her.</div>`;
+  const defs=[['army','INFANTERIE','Kann Länder einnehmen und eigene Gebiete sichern.'],['armor','PANZERVERBAND','14 Angriffsstärke; schnelle Offensiven, teurer als Infanterie.'],['recon','SPÄHER','Schnell und günstig; erkundet Nachbargebiete, kann keine Länder einnehmen.'],['air','KAMPFFLUGZEUG','Klärt auf und fängt feindliche Radarkontakte ab.'],['navy','PATROUILLENSCHIFF','Überwacht Seewege und unterstützt Küsten.'],['mobile','MOBILES RADAR','470 km Luftüberwachung. Kann umziehen.'],['radar','FESTE RADARSTATION','1.050 km Reichweite. Erkennt Anflüge früher.'],['base','MILITÄRBASIS','Vergrößert dein Netz aus Versorgung und Radar.'],['fort','BEFESTIGUNG','Schützt eigenes Land, maximal Stufe 3.'],['reinforce','TRUPPE VERSTÄRKEN','Stellt Stärke einer Armee wieder her.'],['repair','HQ REPARIEREN','Stellt 25 Prozentpunkte Basisintegrität her.']];
+  const sites=[...new Set([...state.bases,...WORLD.filter(c=>owner(c.id)==='player').map(c=>c.id)])].slice(0,16);
+  return `<div class="section-assist"><strong>SO BAUST DU:</strong> ① Unten Bauort auswählen ② Gebäude oder Einheit antippen. Die neue Station erscheint sofort auf der Karte.</div><div class="panel-title">BAUORT WÄHLEN</div><div class="target-list">${sites.map(site=>`<button class="target-choice ${site===id?'active':''}" data-site="${site}"><span class="symbol-mini">⌂</span>${esc(name(site))}<small>${state.bases.includes(site)?'MILITÄRBASIS':'EIGENES LAND'}</small></button>`).join('')}</div><div class="selection-card"><h3>${esc(name(id))}</h3><p class="panel-desc" style="margin-top:7px">${yes?'Bauort freigegeben. Tippe auf eine Aktion.':'Hier kannst du noch nicht bauen. Wähle ein eigenes Land oder eine Basis.'}</p>${detailRows([['VERFÜGBARE VP',Math.floor(state.supplies).toString()],['EINKOMMEN',incomePerMinute()+' VP / MIN'],['VERSORGUNG',isSupplied(id)?'VERBUNDEN':'ABGESCHNITTEN']])}</div><div><div class="panel-title">EINHEITEN & GEBÄUDE</div>${defs.map(([key,title,description])=>`<div class="build-row" style="margin-bottom:7px"><div class="build-entry"><span class="build-symbol">${iconSVG(key)}</span><div><strong>${title}</strong><div class="sub">${description}</div></div></div><button data-build="${key}" aria-label="${title} für ${COST[key]} Versorgungspunkte bauen" ${!yes||state.supplies<COST[key]||(!isSupplied(id)&&key!=='base')||(key==='navy'&&!c.coastal)||(key==='base'&&state.bases.includes(id))||(key==='fort'&&(owner(id)!=='player'||state.countries[id].fort>=3))||(key==='repair'&&(id!=='URY'||state.baseHp>=100))||(key==='reinforce'&&!state.units.some(u=>u.id===selectedUnit&&u.type==='army'&&u.country===id&&!u.order&&u.power<10))?'disabled':''}>${COST[key]} VP</button></div>`).join('')}</div><div class="tip">TIPP: Eine neue Radarstation wird sofort auf der Karte markiert und vergrößert deine Luftüberwachung.</div>`;
 }
+
 function intelHTML(){
   const r=sensorSelected(),t=state.tracks.find(x=>x.id===selectedTrack),radars=activeRadars();
-  const contacts=r?tracksAt(r):[];
-  const stat=`<div class="selection-card"><div class="panel-title">SENSOREN IM NETZ</div>${detailRows([['STATIONEN',String(radars.length)],['ERFASSTE TRACKS',String(contacts.length)],['PUNKTE',String(state.score)],['HQ INTEGRITÄT',state.baseHp+'%']])}</div>`;
+  const contacts=r?tracksAt(r).sort((a,b)=>Number(!!b.raid)-Number(!!a.raid)):[];
+  const stat=`<div class="section-assist"><strong>RADAR IST DEINE FRÜHWARNUNG.</strong> Unbekannte Anflüge auf das HQ verursachen Schäden, wenn du sie nicht rechtzeitig abfängst. Identifiziere den Kontakt und sende einen freien Abfangjäger. Neue Radarstationen vergrößern den Erfassungsbereich.</div><div class="selection-card"><div class="panel-title">SENSOREN IM NETZ</div>${detailRows([['STATIONEN',String(radars.length)],['ERFASSTE TRACKS',String(contacts.length)],['PUNKTE',String(state.score)],['HQ INTEGRITÄT',state.baseHp+'%']])}</div>`;
   const stations=`<div><div class="panel-title">RADARSTATIONEN</div><div class="unit-list">${radars.map(x=>`<button class="unit-row ${x.id===selectedRadar?'active':''}" data-radar="${x.id}"><span class="unit-symbol">◎</span><span class="unit-info"><strong>${esc(x.id)} · ${esc(x.type.toUpperCase())}</strong><small>${esc(name(x.country))} · ${x.range} km</small></span><span>→</span></button>`).join('')}</div></div>`;
   let trackInfo=t?`<div class="selection-card"><div class="panel-title">GEWÄHLTER RADARKONTAKT</div><header><h3>${esc(t.id)}</h3><span class="tag ${t.identified==='hostile'?'enemy':'neutral'}">${t.identified==='hostile'?'BEDROHUNG':t.identified==='civil'?'ZIVIL':t.identified==='unknown'?'UNGEKLÄRT':'UNIDENTIFIZIERT'}</span></header>${detailRows([['HÖHE',Math.round(t.altitude)+' ft'],['GESCHW.',Math.round(t.speed)+' km/h'],['KURS',Math.round((t.heading*180/Math.PI+90)%360)+'°'],['REICHWEITE',Math.round(dist(r.lon,r.lat,t.lon,t.lat))+' km']])}<div class="button-stack" style="margin-top:10px"><button class="action-btn" data-action="identify" ${t.identified||state.intelOrders.some(x=>x.id===t.id)?'disabled':''}>IDENTIFIZIEREN <span>IFF →</span></button><button class="action-btn ghost" data-action="intercept">ABFANGJÄGER SENDEN <span>8s</span></button></div></div>`:'<div class="tip">Wähle einen Kontakt auf dem Radarschirm oder in der Kontaktliste, um ihn zu identifizieren.</div>';
-  return `${stat}${stations}<div><div class="panel-title">KONTAKTE IN AUSGEWÄHLTEM SEKTOR</div><div class="unit-list">${contacts.slice(0,16).map(t=>`<button class="contact-row ${selectedTrack===t.id?'active':''}" data-track="${t.id}"><span>△ &nbsp;${t.id}</span><span class="${!t.identified?'yellow':''}">${t.identified?({'civil':'CIV','hostile':'HOSTILE','unknown':'UNK'}[t.identified]):'???'}</span></button>`).join('')||'<span class="empty">Keine Luftkontakte erfasst.</span>'}</div></div>${trackInfo}<button class="action-btn ghost" data-action="open-radar">RADARSCHIRM ÖFFNEN <span>↗</span></button>`;
+  return `${stat}${stations}<div><div class="panel-title">KONTAKTE IN AUSGEWÄHLTEM SEKTOR</div><div class="unit-list">${contacts.slice(0,16).map(t=>`<button class="contact-row ${selectedTrack===t.id?'active':''}" data-track="${t.id}"><span>${t.raid?'⚠ ':'△ '}${t.id}</span><span class="${!t.identified?'yellow':''}">${t.identified?({'civil':'CIV','hostile':'HOSTILE','unknown':'UNK'}[t.identified]):'???'}</span></button>`).join('')||'<span class="empty">Keine Luftkontakte erfasst.</span>'}</div></div>${trackInfo}<button class="action-btn ghost" data-action="open-radar">RADARSCHIRM ÖFFNEN <span>↗</span></button>`;
 }
 function refreshUI(){
   needsUI=false;$('supplies').innerHTML=Math.floor(state.supplies)+' <small>VP</small>';$('territories').innerHTML=owned()+' <small>/ 3</small>';$('intel-count').innerHTML=getIntel().size+' <small>GEB.</small>';$('time').textContent=fmt(state.time);$('date-label').textContent='TAG '+String(Math.floor(state.time/90)+1).padStart(3,'0');
@@ -766,15 +1129,17 @@ function refreshUI(){
   const net=supplyNetwork();$('map-bottom-status').textContent=`FRONTLINE ${owned()} / VERSORGT ${[...net.reached].filter(id=>owner(id)==='player').length} // SCORE ${state.score} // HQ ${state.baseHp}%`;
   $('toggle-supply').classList.toggle('active',showSupplyLines);
   $('toggle-radar').classList.toggle('active',showRadarRings);
-  $('mobile-selected').textContent=name(selectedCountry)+' / '+(selectedUnit||'—');
+  $('mobile-selected').textContent=name(selectedCountry)+' / '+(selectedUnit||'—');refreshGuide();
 }
 function openModal(type){
   modalType=type;const modal=$('modal'),title=$('modal-title'),body=$('modal-content'),confirm=$('modal-confirm'),cancel=$('modal-cancel');
   modal.classList.remove('hidden');
   if(type==='briefing'||type==='help'){
     title.textContent=type==='briefing'?'MISSION: FIRST EXPANSION':'KOMMANDOHANDBUCH';
-    body.innerHTML=`<p>Du leitest GREENWATCH von einer einzigen Basis in <b>Uruguay</b>. Ziel: <b>3 Länder erobern</b> und das HQ schützen.</p><ol><li><b>iPhone:</b> Mit einem Finger die Karte verschieben, mit zwei Fingern zoomen und auf ein Land tippen. Die Befehlszentrale öffnet sich beim Auswählen. Mit dem Pfeil schließt du sie wieder.</li><li>Wähle unter <b>BEFEHLE</b> die Einheit A-01, tippe auf Uruguay und drücke <b>ANGRIFF</b>. Für stärkere Länder eignet sich der koordinierte Angriff mit zwei Armeen.</li><li>Über <b>BAUEN</b> stellst du Truppen auf und errichtest Radarstationen, Befestigungen oder neue Militärbasen. Versorgte Länder bringen regelmäßig VP.</li><li><b>RADAR</b> zeigt erkannte Flugzeuge als Dreiecke und Kursvektoren. Unter <b>INTEL</b> kannst du Kontakte identifizieren oder einen Abfangjäger schicken.</li><li><b>Neu v0.3:</b> Wähle ein Kampfflugzeug und ein Zielgebiet und starte <b>LUFTAUFKLÄRUNG</b>. Diese macht die Gegend für 120 Spielsekunden sichtbar. Garnisonen verstärken die Verteidigung gegen die KI.</li></ol><p>Spielstände werden lokal im jeweiligen Browser gespeichert. Auf dem iPad ist die Befehlszentrale neben der Karte sichtbar, auf dem iPhone als ausklappbares Panel. Die Weltgeografie ist real, Fraktionen und Ereignisse sind fiktiv.</p>`;
+    body.innerHTML=`<p>Du startest mit einer Basis in Uruguay. <b>Deine erste Aufgabe: Uruguay erobern.</b> Danach Paraguay und Argentinien sichern.</p><ol><li><b>Schnellstart:</b> Tippe unten auf der Weltkarte auf <b>ANGREIFEN</b>. Das Spiel wählt eine bereitstehende Armee und zeigt dir den nächsten erreichbaren Angriff.</li><li><b>Selbst kommandieren:</b> TRUPPEN öffnen, eine Einheit antippen, ein Ziel aus der Liste „Erreichbare Ziele“ wählen und den Befehl auslösen.</li><li><b>Bauen:</b> Über BAUEN zuerst den Bauort auswählen und dann die gewünschte Truppe, Basis oder Radarstation kaufen. Panzer sind starke Angreifer, Späher erkunden die Umgebung.</li><li><b>Frontwarnung:</b> Wenn eine gegnerische Offensive angekündigt wird, FRONT ANZEIGEN tippen. Du hast Zeit, Truppen zu verlegen oder die Stellung auszubauen.</li><li><b>Radar retten:</b> Bei einer gelben Warnung die Warnleiste antippen. Radarkontakt identifizieren und <b>ABFANGJÄGER SENDEN</b> auswählen. Nicht abgefangene Angriffe beschädigen das Hauptquartier!</li><li><b>iPhone/iPad:</b> Karte mit einem Finger verschieben und mit zwei Fingern zoomen. Die Befehlszentrale öffnet sich als große Touch-Leiste.</li></ol><p><b>Legende:</b> Kettenfahrzeug = Infanterie, großer Panzer = Panzerverband, Antennensymbol = Späher, Schiff = Navy, Dreieck = Flugzeug, Radartruck = mobiles Radar, Antenne = Radarstation, Gebäude = Basis.</p><p>Die Karte nutzt reale Geografie; Fraktionen und Konflikte sind fiktiv. Speicherung funktioniert lokal im Browser. Über ⇩ erscheint eine Anleitung zum Hinzufügen auf den iPhone-/iPad-Home-Bildschirm.</p>`;
     confirm.textContent=type==='briefing'?'EINSATZ STARTEN →':'VERSTANDEN →';cancel.style.display=type==='briefing'?'none':'';
+  }else if(type==='install'){
+    title.textContent='GREENWATCH ALS APP';body.innerHTML='<p><b>iPhone / iPad:</b> Öffne die GitHub-Pages-Spieladresse in Safari. Tippe auf <b>Teilen</b> und dann auf <b>Zum Home-Bildschirm</b> / <b>Zum Home-Bildschirm hinzufügen</b>. Bestätige mit <b>Hinzufügen</b>.</p><p>Danach startet GREENWATCH mit eigenem App-Icon direkt vom Home-Bildschirm. Nach dem ersten Online-Aufruf können die Spieldateien über den Service Worker auch offline geladen werden, sofern iOS sie nicht aus dem Cache entfernt hat.</p><p><b>Android / Chrome:</b> Im Browser-Menü „App installieren“ oder „Zum Startbildschirm hinzufügen“ wählen.</p><p>Lokale Spielstände werden auf dem jeweiligen Gerät gespeichert; sie werden nicht automatisch zwischen Safari und der installierten Web-App synchronisiert.</p>';confirm.textContent='VERSTANDEN →';cancel.style.display='none';
   }else if(type==='victory'){
     title.textContent='MISSION ERFÜLLT';body.innerHTML=`<p>Drei Länder sind unter GREENWATCH-Kontrolle. Du hast das erste strategische Expansionsziel erreicht.</p><p><b>+1.000 Punkte.</b> Du kannst die Welt nun im Endlosmodus weiter erobern, neue Radarstationen aufbauen und andere Fraktionen bekämpfen.</p>`;confirm.textContent='ENDLOSMODUS FORTSETZEN →';cancel.style.display='none';
   }else if(type==='defeat'){
@@ -785,13 +1150,13 @@ function openModal(type){
 }
 function closeModal(confirm=false){
   $('modal').classList.add('hidden');
-  if(confirm&&modalType==='reset'){localStorage.removeItem(SAVEKEY);localStorage.removeItem(OLD_SAVEKEY);localStorage.removeItem(OLDEST_SAVEKEY);state=newState();selectedCountry='URY';selectedUnit='A-01';selectedRadar='RDR-01';selectedTrack=null;camera={lon:-55.5,lat:-27,zoom:4};log('Neue Operation gestartet.','good');toast('Neue Operation begonnen.');}
-  if(confirm&&modalType==='defeat'){localStorage.removeItem(SAVEKEY);localStorage.removeItem(OLD_SAVEKEY);localStorage.removeItem(OLDEST_SAVEKEY);state=newState();selectedCountry='URY';selectedUnit='A-01';selectedRadar='RDR-01';selectedTrack=null;camera={lon:-55.5,lat:-27,zoom:4};log('Neue Operation gestartet.','good');}
+  if(confirm&&modalType==='reset'){localStorage.removeItem(SAVEKEY);localStorage.removeItem(PREV_SAVEKEY);localStorage.removeItem(OLD_SAVEKEY);localStorage.removeItem(OLDER_SAVEKEY);localStorage.removeItem(OLDEST_SAVEKEY);state=newState();selectedCountry='URY';selectedUnit='A-01';selectedRadar='RDR-01';selectedTrack=null;camera={lon:-55.5,lat:-27,zoom:4};log('Neue Operation gestartet.','good');toast('Neue Operation begonnen.');}
+  if(confirm&&modalType==='defeat'){localStorage.removeItem(SAVEKEY);localStorage.removeItem(PREV_SAVEKEY);localStorage.removeItem(OLD_SAVEKEY);localStorage.removeItem(OLDER_SAVEKEY);localStorage.removeItem(OLDEST_SAVEKEY);state=newState();selectedCountry='URY';selectedUnit='A-01';selectedRadar='RDR-01';selectedTrack=null;camera={lon:-55.5,lat:-27,zoom:4};log('Neue Operation gestartet.','good');}
   needsUI=true;
 }
 function setup(){
   setupMapInput();
-  if(isMobile())camera={lon:-55.5,lat:-30,zoom:8};
+  if(window.innerWidth<=1100)camera={lon:-55.5,lat:-30,zoom:8};
   $('sheet-toggle').onclick=()=>setMobileSheet(!commandSheetOpen);
   $('sheet-close').onclick=()=>setMobileSheet(false);
   $('mobile-world').onclick=()=>{openWorld();setMobileSheet(false);};
@@ -801,24 +1166,31 @@ function setup(){
   let startSheetTouch=null;
   $('mobile-sheet-grip').addEventListener('touchstart',e=>{startSheetTouch=e.touches[0].clientY;},{passive:true});
   $('mobile-sheet-grip').addEventListener('touchend',e=>{if(startSheetTouch===null)return;const dy=e.changedTouches[0].clientY-startSheetTouch;if(Math.abs(dy)>35)setMobileSheet(dy<0);startSheetTouch=null;},{passive:true});
+  $('mission-focus').onclick=focusGoal;
+  $('mission-act').onclick=actGoal;
+  $('global-alert').onclick=()=>detectedThreat()?openThreat():openFrontThreat();
+  $('radar-warning').onclick=openThreat;
   $('zoom-in').onclick=()=>zoomAt(1.32);$('zoom-out').onclick=()=>zoomAt(.76);
-  $('zoom-home').onclick=()=>{camera={lon:-55.5,lat:-27,zoom:4};};
+  $('zoom-home').onclick=()=>{camera={lon:-55.5,lat:-29,zoom:window.innerWidth<=1100?8:4};};
   $('toggle-supply').onclick=()=>{showSupplyLines=!showSupplyLines;needsUI=true;};
   $('toggle-radar').onclick=()=>{showRadarRings=!showRadarRings;needsUI=true;};
   $('zoom-world').onclick=()=>{camera={lon:0,lat:0,zoom:1.0};};
   $('nav-world').onclick=openWorld;$('nav-radar').onclick=()=>{openRadar();tab('intel');};
   $('nav-how').onclick=()=>openModal('help');$('help-btn').onclick=()=>openModal('help');
+  $('install-btn').onclick=()=>openModal('install');
   $('save-btn').onclick=()=>save();$('reset-btn').onclick=()=>openModal('reset');
   $('pause-btn').onclick=()=>{state.paused=!state.paused;needsUI=true;};
   for(let button of document.querySelectorAll('[data-speed]'))button.onclick=()=>{state.speed=Number(button.dataset.speed);state.paused=false;needsUI=true;};
   for(let b of document.querySelectorAll('.tab'))b.onclick=()=>tab(b.dataset.tab);
   document.querySelector('.sidebar-scroll').addEventListener('click',e=>{
     let b=e.target.closest('button');if(!b)return;
-    if(b.dataset.unit){selectedUnit=b.dataset.unit;needsUI=true;return;}
+    if(b.dataset.unit){selectedUnit=b.dataset.unit;const unit=state.units.find(u=>u.id===selectedUnit);if(unit){selectedCountry=unit.country;pointCameraAt(unit.country);}needsUI=true;return;}
+    if(b.dataset.target){selectedCountry=b.dataset.target;pointCameraAt(selectedCountry);needsUI=true;return;}
+    if(b.dataset.site){selectedCountry=b.dataset.site;pointCameraAt(selectedCountry);needsUI=true;return;}
     if(b.dataset.radar){selectedRadar=b.dataset.radar;openRadar();tab('intel');return;}
     if(b.dataset.track){selectedTrack=b.dataset.track;openRadar();tab('intel');return;}
     if(b.dataset.build){build(b.dataset.build);return;}
-    if(b.dataset.action){if(b.dataset.action==='order')issueOrder();if(b.dataset.action==='group')issueGroupAttack();if(b.dataset.action==='identify')identify();if(b.dataset.action==='intercept')intercept();if(b.dataset.action==='recon')issueRecon();if(b.dataset.action==='open-radar')openRadar();needsUI=true;}
+    if(b.dataset.action){if(b.dataset.action==='order')issueOrder();if(b.dataset.action==='group')issueGroupAttack();if(b.dataset.action==='identify')identify();if(b.dataset.action==='intercept')intercept();if(b.dataset.action==='recon')issueRecon();if(b.dataset.action==='open-radar')openRadar();if(b.dataset.action==='goto-build')tab('build');if(b.dataset.action==='front')openFrontThreat();needsUI=true;}
   });
   $('radar-station-select').addEventListener('change',e=>{selectedRadar=e.target.value;selectedTrack=null;needsUI=true;});
   $('modal-confirm').onclick=()=>closeModal(true);$('modal-cancel').onclick=()=>closeModal(false);
@@ -836,6 +1208,7 @@ function loop(t){
   requestAnimationFrame(loop);
 }
 initial();setup();refreshUI();requestAnimationFrame(loop);
+if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(e=>console.warn('Offline cache unavailable',e)));}
 })();
 
 </script>
